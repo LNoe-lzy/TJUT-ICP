@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript" src="/javascripts/masonry.pkgd.min.js"></script>
+    <script type="text/javascript" src="/javascripts/script.js"></script>
+</head>
+<body>
+<% if (success) { %>
+<div class="alert alert-success alert-dismissible" role="alert" style="z-index: 1000; position: fixed; top: 0; right: 0">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong><%= success %></strong>
+</div>
+<% } %>
+<% if (error) { %>{
+<div class="alert alert-warning alert-dismissible" role="alert" style="z-index: 1000; position: fixed; top: 0; right: 0;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong><%= error %></strong>
+</div>
+<% } %>
+<div class="header">
+    <div class="container row">
+        <div class="headerContainer-left col-md-10">
+            <form method="get">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1"><a class="logo" href="/"></a> </span>
+                    <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                </div>
+            </form>
+        </div>
+        <div class="headerContainer-right col-md-2">
+            <% if (user) { %>
+            <div class="userinfo">
+                <a href="/<%= user.name %>" class="btn btn-default"><%= user.name %></a>
+                <a href="/logout" class="btn btn-info">退出</a>
+            </div>
+            <% } else  { %>
+            <div class="userinfo">
+                <a href="/login" class="btn btn-info">登录</a>
+                <a href="/signup" class="btn btn-success">注册</a>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+<div class="footer-buttons">
+    <% if (user) { %>
+    <a href="/<%= user.name %>/new" class="plus">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>
+    </a>
+    <% } %>
+</div>

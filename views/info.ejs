@@ -1,0 +1,24 @@
+<%- include header.ejs %>
+<div class="main-container">
+    <div class="info-con row">
+        <div class="info-item col-lg-4">
+            <img src="/avatar/<%= path.imagePath %>" alt="">
+            <div class="item-user">
+                <a><%= path.name %></a>
+            </div>
+            <% if (!path.info) { %>
+            <div class="item-from">
+                请您点击<a href="/<%= user.name %>/edit/<%= path.imageName %>"><i>编辑</i></a> 进行编辑!
+            </div>
+            <% } else { %>
+            <div class="item-wrap">
+                <%= path.info %>
+            </div>
+            <div class="item-from">
+                来自于 <a><%= path.tag %></a>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+<%- include footer.ejs %>

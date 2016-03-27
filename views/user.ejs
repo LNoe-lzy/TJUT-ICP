@@ -1,0 +1,65 @@
+<%- include header.ejs %>
+<div class="fixed-header">
+    <div class="container row">
+        <% if (paths[0].name == user.name) { %>
+        <a class="btn btn-danger col-sm-1">编辑</a>
+        <div class="dropdown col-sm-1">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li><a href="#">编辑</a></li>
+                <li><a href="#">帮助</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="/logout">退出</a></li>
+            </ul>
+        </div>
+        <% } %>
+    </div>
+</div>
+<div class="user-title">
+    <div class="user-title-info">
+        <h1><%= paths[0].name %></h1>
+    </div>
+</div>
+<div class="user-container">
+    <div class="row masonry-container">
+        <% paths.forEach(function(path, index){ %>
+        <div class="item">
+            <a href="/remove/<%= user.name %>/<%= path.imageName %>" class="remove btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+            <a href="/<%= path.imageName %>/info"><img src="/avatar/<%= path.imagePath %>" alt=""></a>
+            <div class="item-user">
+                <a><%= path.name %></a>
+            </div>
+            <% if (!path.info) { %>
+            <div class="item-from">
+                请您点击<a href="/<%= user.name %>/edit/<%= path.imageName %>"><i>编辑</i></a> 进行编辑!
+            </div>
+            <% } else { %>
+            <div class="item-wrap">
+                <%= path.info %>
+            </div>
+            <div class="item-from">
+                来自于 <a href="/tags/<%= path.tag %>"><%= path.tag %></a>
+            </div>
+            <% } %>
+        </div>
+        <% }) %>
+
+        <div class="item">
+            <a href="/"><img src="/images/1.jpg" alt=""></a>
+            <div class="item-wrap">
+                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
+            </div>
+            <div class="item-user">
+                <a>username</a>
+                <a class="btn btn-info">查看</a>
+            </div>
+            <div class="item-from">
+                来自于 <a>info</a>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include footer.ejs %>

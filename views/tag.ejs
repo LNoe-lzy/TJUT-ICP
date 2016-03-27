@@ -1,0 +1,50 @@
+<%- include header.ejs %>
+<div class="main-container">
+    <div class="row masonry-container">
+        <% tags.forEach(function(tag, index){ %>
+        <!--bootstrap弹窗-->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <img class="modal-body-img" src="/avatar/<%= tag.imagePath %>" alt="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <a href="/<%= tag.imageName %>/info" class="btn btn-primary">查看相似</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <a class="item-modal" data-toggle="modal" data-target="#myModal"><img src="/avatar/<%= tag.imagePath %>" alt=""></a>
+            <div class="item-user">
+                <a><%= tag.name %></a>
+                <% if (user) { %>
+                <a href="/<%= tag.name %>" class="btn btn-info">查看</a>
+                <% } %>
+            </div>
+            <% if (user) {%>
+            <% if ((!tag.info)&&(tag.name == tag.name)) { %>
+            <div class="item-from">
+                请您点击<a href="/<%= tag.name %>/edit/<%= tag.imageName %>"><i>编辑</i></a> 进行编辑!
+            </div>
+            <% } else { %>
+            <div class="item-wrap">
+                <%= tag.info %>
+            </div>
+            <div class="item-from">
+                来自于 <a><%= tag.tag %></a>
+            </div>
+            <% } %>
+            <% } %>
+        </div>
+        <% }) %>
+
+    </div>
+</div>
+<%- include footer.ejs %>
