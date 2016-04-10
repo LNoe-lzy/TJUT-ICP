@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/script.js"></script>
+</head>
+<body>
+<div class="post-container">
+    <div class="post-auth">
+        <form method="post">
+            <h1 class="title-auth">Proxy.</h1>
+            <div class="input-symbol">
+                <input type="text" class="form-control" id="t_url" placeholder="请输入目标地址..." name="t_url">
+            </div>
+            <div class="input-symbol">
+                <input type="text" class="form-control" id="t-a" placeholder="请输入目标选择器..." name="t-a">
+            </div>
+            <a class="btn-post" id="proxy-btn">开始获取数据</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

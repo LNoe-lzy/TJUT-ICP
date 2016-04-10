@@ -2,6 +2,7 @@ body {
   padding: 0;
   margin: 0;
   background: #e9e9e9;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   -webkit-transition: all 200ms ease-in;
   -moz-transition: all 200ms ease-in;
   -o-transition: all 200ms ease-in;
@@ -14,6 +15,9 @@ a{
 a:hover{
   text-decoration: none;
 }
+input{
+  outline: none;
+}
 .header{
   height: 54px;
   width:100%;
@@ -23,8 +27,9 @@ a:hover{
   right: 0;
   padding-top: 10px;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
+  background-image: url('../images/bg1.png');
+  background-color: #364050;
   z-index: 800;
-  background: #ffffff;
 }
 .logo{
   background-image: url("../images/logo.png");
@@ -34,41 +39,76 @@ a:hover{
 }
 .main-container {
   padding: 55px 20px;
+  /*background: url("../images/bg.jpg")no-repeat center top;*/
+  /*background-size: cover;*/
+  /*background-attachment: fixed;*/
+  background-color: #e8e8e8;
+  background-image: url('../images/bg2.png');
+  min-height: 612px;
+}
+.masonry-container{
+  width: 80%;
+  margin: 0 auto;
+}
+.clear{
+  clear: both;
 }
 .item{
-  width: 236px;
-  margin: 14px 7px 0 7px;
+  width: 285px;
+  margin: 14px 7px 0 25px;
   border-radius: 6px;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
-  background: #ffffff;
+  background-color: white;
+  background-image: url(../images/bg2.png);
   position: relative;
+  float: left;
+}
+.item .item-image{
+  display: block;
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+}
+.item-image img{
+  position: absolute;
 }
 .item .remove{
   position: absolute;
   top: 10px;
   right: 10px;
+  z-index: 100;
 }
 .item a.item-modal{
   cursor: pointer;
 }
 .item img{
   width: 100%;
-  border-radius: 6px 6px 0 0;
-  border-bottom: 1px solid #adadad;
 }
 .item-wrap{
   padding: 5px 10px 5px 10px;
   font-size: 12px;
-  border-bottom: 1px solid #adadad;
+  border-bottom: 1px solid rgb(231, 231, 231);
+  height: 42px;
+  overflow: hidden;
 }
 .item-user{
-  padding: 5px 10px 5px 10px;
-  border-bottom: 1px solid #adadad;
-  color: #555;
+  display: block;
+  padding: .5em;
+  border-bottom: 1px solid rgb(231, 231, 231);
+  color: rgb(119, 119, 119);
+  font-size: 16px;
   font-weight: 500;
+  position: relative;
+  -webkit-transition: all 200ms ease-in;
+  -moz-transition: all 200ms ease-in;
+  -o-transition: all 200ms ease-in;
+  transition: all 200ms ease-in;
 }
-.item-user a.btn{
-  margin-left: 90px;
+.item-user:hover{
+  background: rgb(231, 231, 231);
+  color: rgb(119, 119, 119);
 }
 .item-from{
   padding: 5px 10px 5px 10px;
@@ -78,6 +118,7 @@ a:hover{
   color: #b0b0b0;
   font-weight: 600;
 }
+
 .footer-buttons{
   position: fixed;
   bottom: 100px;
@@ -96,23 +137,40 @@ a:hover{
   cursor: pointer;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
 }
+
+/*user页面*/
 .fixed-header{
   margin-top: 55px;
   padding: 10px;
   width: 100%;
-  background: #ffffff;
+  background-color: white;
+  background-image: url(../images/bg2.png);
 }
 .user-title{
   height: 80px;
-  background: #ffffff;
+  background-color: white;
+  background-image: url(../images/bg2.png);
   padding: 0 20px 0 20px;
 }
 .user-title-info{
   width: 100%;
   height: 100%;
-  border-top: 1px solid #adadad;
-  border-bottom: 1px solid #adadad;
+  border-top: 1px solid rgb(231, 231, 231);
+  border-bottom: 1px solid rgb(231, 231, 231);
   text-align: center;
+}
+.user-text{
+  background-color: white;
+  background-image: url(../images/bg2.png);
+  padding: 0 20px 0 20px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
+}
+.user-text-info{
+  text-align: center;
+  font-size: 16px;
+  width: 100%;
+  height: 100%;
+  padding: 20px 0 10px 0;
 }
 .user-container{
   padding:0 20px;
@@ -122,19 +180,133 @@ a:hover{
   width: 60%;
   margin: 0 auto;
 }
-.info-con{
 
-}
+/*info页面*/
 .info-item{
+  margin: 14px 7px 0 20px;
   width: 400px;
-  margin: 14px 7px 0 7px;
   border-radius: 6px;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
   background: #ffffff;
+  overflow-x: auto;
+  overflow-y: scroll;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  bottom: 10px;
 }
 .info-item img{
   width:100%;
 }
+.info-tags{
+  margin: 14px 7px 0 402px;
+  float: left;
+}
+.info-tags .item {
+  width: 250px;
+}
+
 .modal-body-img{
   width: 100%;
+}
+
+.thumbnail img{
+  max-height: 150px;
+}
+
+.new-wrap{
+  width: 60%;
+  padding-top: 50px;
+  margin: 0 auto;
+  height: 502px;
+}
+
+/*登录注册页面*/
+.post-container{
+  position: absolute;
+  top: 0;
+  left:0;
+  bottom:0;
+  right:0;
+  background: url("../images/bg.jpg")no-repeat center top;
+  background-size: cover;
+  background-attachment: fixed;
+  text-align: center;
+}
+.post-auth{
+  width: 40%;
+  margin: 0 auto;
+  padding-top: 8em;
+}
+.title-auth{
+  font-size: 40px;
+  line-height: 48px;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+}
+.subtitle-auth{
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0 15% 3rem;
+}
+.input-symbol{
+  margin-bottom: 2px;
+  width: 100%;
+  display: inline-block;
+  position: relative;
+}
+.input-symbol input {
+  width: 80%;
+  margin: 0 auto;
+  padding: 1.5em 0 1.5em 3em;
+  margin-bottom: .4em;
+  box-shadow: white 0 0 0 1000px inset;
+  font-size: 14px;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  color: rgb(51, 51, 51);
+  line-height: 1.5rem;
+  border: none;
+  border-radius: 0;
+  outline: none;
+}
+.btn-post{
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 1em;
+  background-color: rgb(44, 197, 210);
+  color: white;
+  font-size: 14px;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  text-transform: uppercase;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
+  line-height: 20px;
+  text-decoration: none;
+  padding: 1em 1.25em;
+  transition: all 200ms ease-in;
+  border: none;
+}
+.link-auth-alt {
+  bottom: 0;
+  margin-top: 1rem;
+  position: relative;
+  font-size: 12px;
+  line-height: 16px;
+  top: auto;
+  right: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  color: rgb(170, 170, 170);
+  display: inline-block;
+  text-decoration: none;
 }

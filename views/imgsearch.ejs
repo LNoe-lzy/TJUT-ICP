@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="post-container">
+    <div class="post-auth">
+        <h1 class="title-auth">Sign In.</h1>
+        <p class="subtitle-auth">Signing in allows you to view private lists</p>
+        <form method="post" enctype='multipart/form-data'>
+            <div class="input-symbol">
+                <input type="file" class="form-control" id="InputUsername" placeholder="username" name="name">
+            </div>
+            <button type="submit" class="btn-post">Submit</button>
+        </form>
+        <a href="/signup" class="link-auth-alt">Need an account? Join Now.</a>
+    </div>
+</div>
+</body>
+</html>

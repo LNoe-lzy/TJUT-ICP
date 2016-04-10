@@ -1,15 +1,19 @@
 <%- include header.ejs %>
-<div class="edit-container">
-    <form method="post">
-        <div class="form-group">
-            <label for="InputInfo">添加描述</label>
-            <input type="text" class="form-control" id="InputInfo" placeholder="描述..." name="info">
-        </div>
-        <div class="form-group">
-            <label for="InputTag">添加分类</label>
-            <input type="text" class="form-control" id="InputTag" placeholder="分类..." name="tag">
-        </div>
-        <button type="submit" class="btn btn-default">提交</button>
-    </form>
+<div class="main-container" style="text-align: center">
+    <div class="post-auth">
+        <form method="post">
+            <div class="form-group">
+                <div class="input-symbol">
+                    <input type="text" class="form-control" id="InputInfo" placeholder="添加描述..." name="info">
+                </div>
+            </div>
+            <div class="input-symbol">
+                <input type="text" class="form-control" id="InputTag" placeholder="添加分类一..." name="tag1">
+                <input type="text" class="form-control" id="InputTag" placeholder="添加分类二..." name="tag2">
+                <input type="text" class="form-control" id="InputTag" placeholder="添加分类三..." name="tag3">
+            </div>
+            <button type="submit" class="btn-post">提交</button>
+        </form>
+    </div>
 </div>
 <%- include footer.ejs %>

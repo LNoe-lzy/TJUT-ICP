@@ -1,23 +1,76 @@
 <%- include header.ejs %>
 <div class="main-container">
     <div class="info-con row">
-        <div class="info-item col-lg-4">
-            <img src="/avatar/<%= path.imagePath %>" alt="">
+        <div class="info-item">
+            <img src="<%= image.imagePath %>" alt="">
             <div class="item-user">
-                <a><%= path.name %></a>
+                <a><%= image.name %></a>
             </div>
-            <% if (!path.info) { %>
+            <% if (!image.info) { %>
             <div class="item-from">
-                请您点击<a href="/<%= user.name %>/edit/<%= path.imageName %>"><i>编辑</i></a> 进行编辑!
+                请您点击<a href="/u/edit/<%= user.name %>/<%= image.imageName %>"><i>编辑</i></a> 进行编辑!
             </div>
             <% } else { %>
             <div class="item-wrap">
-                <%= path.info %>
+                <%= image.info %>
             </div>
             <div class="item-from">
-                来自于 <a><%= path.tag %></a>
+                来自于 <a><%= image.tag %></a>
             </div>
             <% } %>
+        </div>
+        <div class="info-tags">
+            <% images.forEach(function(imgs, index){ %>
+            <div class="item">
+                <div class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn">
+                    <img src="<%= imgs.imagePath %>" data-imgname="<%= imgs.imageName %>">
+                </div>
+
+                <% if (user) { %>
+                <a class="item-user"  href="/u/<%= imgs.name %>">
+                    <b><%= imgs.name %></b>
+                </a>
+                <% } %>
+
+                <% if (user) {%>
+                <% if ((!imgs.info)&&(imgs.name == user.name)) { %>
+                <div class="item-from">
+                    请您点击<a href="/<%= imgs.name %>/edit/<%= imgs.imageName %>"><i>编辑</i></a> 进行编辑!
+                </div>
+                <% } else { %>
+                <div class="item-wrap">
+                    <%= imgs.info %>
+                </div>
+                <div class="item-from">
+                    来自于
+                    <% imgs.tag.forEach(function(tg, index){ %>
+                    <% if (tg) { %>
+                    <a href="/tags/<%= tg %>"><%= tg %></a>
+                    <% } %>
+                    <% }) %>
+                </div>
+                <% } %>
+                <% } %>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+</div>
+<!--bootstrap弹窗-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <img class="modal-body-img" id="md-by" src="" alt="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <a href="" class="btn btn-primary" id="md-vi">查看相似</a>
+            </div>
         </div>
     </div>
 </div>

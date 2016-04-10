@@ -6,8 +6,6 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="/javascripts/jquery.min.js"></script>
     <script src="/javascripts/bootstrap.min.js"></script>
-    <script src="/javascripts/imagesloaded.pkgd.min.js"></script>
-    <script type="text/javascript" src="/javascripts/masonry.pkgd.min.js"></script>
     <script type="text/javascript" src="/javascripts/script.js"></script>
 </head>
 <body>
@@ -26,17 +24,22 @@
 <div class="header">
     <div class="container row">
         <div class="headerContainer-left col-md-10">
-            <form method="get">
+            <form action="/search" method="get">
                 <div class="input-group">
                     <span class="input-group-addon" id="basic-addon1"><a class="logo" href="/"></a> </span>
-                    <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1" name="keyword">
+                    <span class="input-group-addon" id="basic-addon1">
+                        <a href="/imgsearch">
+                            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                        </a>
+                    </span>
                 </div>
             </form>
         </div>
         <div class="headerContainer-right col-md-2">
             <% if (user) { %>
             <div class="userinfo">
-                <a href="/<%= user.name %>" class="btn btn-default"><%= user.name %></a>
+                <a href="/u/<%= user.name %>" class="btn btn-default"><%= user.name %></a>
                 <a href="/logout" class="btn btn-info">退出</a>
             </div>
             <% } else  { %>

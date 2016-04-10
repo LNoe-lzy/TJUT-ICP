@@ -3,10 +3,12 @@
  */
 var mongodb = require('./db');
 
-function Images(imagePath, imageName, name){
+function Images(imagePath, imageName, name, info, tag){
     this.imagePath = imagePath;
     this.imageName = imageName;
     this.name = name;
+    this.info = info;
+    this.tag = tag
 }
 
 module.exports = Images;
@@ -25,7 +27,9 @@ Images.prototype.save = function(callback){
         imagePath: this.imagePath,
         imageName: this.imageName,
         name: this.name,
-        time: time
+        time: time,
+        info: this.info,
+        tag: this.tag
     };
     mongodb.open(function(err, db){
         if (err){
@@ -65,12 +69,12 @@ Images.getAll = function(name, callback){
             }
             collection.find(query).sort({
                 time: -1
-            }).toArray(function(err,paths){
+            }).toArray(function(err,img){
                 mongodb.close();
                 if (err){
                     return callback(err);
                 }
-                callback(null, paths);
+                callback(null, img);
             });
         });
     });
@@ -88,12 +92,12 @@ Images.getOne = function(imageName, callback){
             }
             collection.findOne({
                 'imageName': imageName
-            }, function(err,paths){
+            }, function(err,image){
                 mongodb.close();
                 if (err){
                     return callback(err);
                 }
-                callback(null, paths);
+                callback(null, image);
             });
         });
     });
@@ -148,32 +152,125 @@ Images.getTags = function(tagName, callback){
     });
 };
 
-//Images.search = function(keyword, callback){
-//    mongodb.open(function(err, db){
-//        if (err){
-//            return callback(err);
-//        }
-//        db.collection('images', function(err, collection){
-//            if (err){
-//                mongodb.close();
-//                return callback(err);
-//            }
-//            var pattern = new RegExp("^.*" + keyword + ".*$", "i");
-//            collection.find({
-//                "title": pattern
-//            }, {
-//                "name": 1,
-//                "time": 1,
-//                "title": 1
-//            }).sort({
-//                time: -1
-//            }).toArray(function(err, docs){
-//                mongodb.close();
-//                if (err){
-//                    return callback(err);
-//                }
-//                callback(null, docs);
-//            });
-//        });
-//    });
-//};
+Images.update = function(name, imageName, info, tag, callback){
+    mongodb.open(function(err, db){
+        if (err){
+            return callback(err);
+        }
+        db.collection('images', function(err, collection){
+            if (err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.update({
+                "name": name,
+                "imageName" :imageName
+            }, {
+                $set: {
+                    info: info,
+                    tag: tag
+                }
+            },function(err){
+                mongodb.close();
+                if (err){
+                    return callback(err);
+                }
+                callback(null);
+            });
+        });
+    });
+};
+
+Images.search = function(keyword, callback){
+    mongodb.open(function(err, db){
+        if (err){
+            return callback(err);
+        }
+        db.collection('images', function(err, collection){
+            if (err){
+                mongodb.close();
+                return callback(err);
+            }
+            var pattern = new RegExp("^.*" + keyword + ".*$", "i");
+            collection.find({
+                "info": pattern
+            }, {
+                "name": 1,
+                "tag": 1,
+                "imageName": 1,
+                "imagePath": 1,
+                "info": 1
+            }).sort({
+                time: -1
+            }).toArray(function(err, imgs){
+                mongodb.close();
+                if (err){
+                    return callback(err);
+                }
+                callback(null, imgs);
+            });
+        });
+    });
+};
+
+Images.getByImageName = function(imageName, callback){
+    mongodb.open(function(err, db){
+        if (err){
+            return callback(err);
+        }
+        db.collection('images', function(err, collection){
+            if (err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.findOne({
+                "imageName": imageName
+            },function(err, image){
+                if (err){
+                    mongodb.close();
+                    return callback(err);
+                }
+                if (image) {
+                    collection.find({
+                        "tag": image.tag
+                    }).sort({
+                        time: -1
+                    }).toArray(function(err, images){
+                        mongodb.close();
+                        if (err){
+                            return callback(err);
+                        }
+                        callback(null, images)
+                    });
+                }
+            });
+        })
+    });
+};
+
+Images.updateUserName = function(name, newName,callback){
+    mongodb.open(function(err, db){
+        if (err){
+            return callback(err);
+        }
+        db.collection('images', function(err, collection){
+            if (err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.update({
+                "name": name
+            }, {
+                $set: {
+                    name: newName
+                }
+            },function(err){
+                mongodb.close();
+                if (err){
+                    return callback(err);
+                }
+                callback(null);
+            });
+        });
+    });
+};

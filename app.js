@@ -8,15 +8,12 @@ var settings = require('./settings');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var flash = require('connect-flash');
+require('events').EventEmitter.prototype._maxListeners = 100;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
-
-var EventEmitter = require('events').EventEmitter;
-var emitter = new EventEmitter();
-emitter.setMaxListeners(50);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

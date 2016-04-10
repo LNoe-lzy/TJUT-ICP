@@ -1,44 +1,34 @@
 <%- include header.ejs %>
 <div class="main-container">
-    <div class="row masonry-container">
-        <% paths.forEach(function(path, index){ %>
-        <!--bootstrap弹窗-->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                    </div>
-                    <div class="modal-body">
-                        <img class="modal-body-img" id="md-by" src="" alt="">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <a href="/<%= path.imageName %>/info" class="btn btn-primary">查看相似</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="masonry-container">
+        <% images.forEach(function(image, index){ %>
         <div class="item">
-            <a class="item-modal mBtn" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/avatar/<%= path.imagePath %>" alt=""></a>
-            <div class="item-user">
-                <a><%= path.name %></a>
-                <% if (user) { %>
-                <a href="/<%= path.name %>" class="btn btn-info">查看</a>
-                <% } %>
+            <div class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn">
+                <img src="<%= image.imagePath %>" data-imgname="<%= image.imageName %>">
             </div>
+
+            <% if (user) { %>
+            <a class="item-user"  href="/u/<%= image.name %>">
+                <b><%= image.name %></b>
+            </a>
+            <% } %>
+
             <% if (user) {%>
-            <% if ((!path.info)&&(path.name == user.name)) { %>
+            <% if ((!image.info)&&(image.name == user.name)) { %>
             <div class="item-from">
-                请您点击<a href="/<%= user.name %>/edit/<%= path.imageName %>"><i>编辑</i></a> 进行编辑!
+                请您点击<a href="/u/edit/<%= user.name %>/<%= image.imageName %>"><i>编辑</i></a> 进行编辑!
             </div>
             <% } else { %>
             <div class="item-wrap">
-                <%= path.info %>
+                <%= image.info %>
             </div>
             <div class="item-from">
-                来自于 <a href="/tags/<%= path.tag %>"><%= path.tag %></a>
+                来自于
+                <% image.tag.forEach(function(tg, index){ %>
+                <% if (tg) { %>
+                <a href="/tags/<%= tg %>"><%= tg %></a>
+                <% } %>
+                <% }) %>
             </div>
             <% } %>
             <% } %>
@@ -46,13 +36,12 @@
         <% }) %>
 
         <div class="item">
-            <a href="/"><img src="/images/1.jpg" alt=""></a>
+            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/1.jpg" alt=""></a>
             <div class="item-wrap">
                 Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
             </div>
             <div class="item-user">
                 <a>username</a>
-                <a class="btn btn-info">查看</a>
             </div>
             <div class="item-from">
                 来自于 <a>info</a>
@@ -60,13 +49,12 @@
         </div>
 
         <div class="item">
-            <a href="/"><img src="/images/1.jpg" alt=""></a>
+            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/1.jpg" alt=""></a>
             <div class="item-wrap">
                 Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
             </div>
             <div class="item-user">
                 <a>username</a>
-                <a class="btn btn-info">查看</a>
             </div>
             <div class="item-from">
                 来自于 <a>info</a>
@@ -74,13 +62,12 @@
         </div>
 
         <div class="item">
-            <a href="/"><img src="/images/5.jpg" alt=""></a>
+            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/5.jpg" alt=""></a>
             <div class="item-wrap">
                 Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
             </div>
             <div class="item-user">
                 <a>username</a>
-                <a class="btn btn-info">查看</a>
             </div>
             <div class="item-from">
                 来自于 <a>info</a>
@@ -88,13 +75,12 @@
         </div>
 
         <div class="item">
-            <a href="/"><img src="/images/4.jpg" alt=""></a>
+            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/4.jpg" alt=""></a>
             <div class="item-wrap">
                 Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
             </div>
             <div class="item-user">
                 <a>username</a>
-                <a class="btn btn-info">查看</a>
             </div>
             <div class="item-from">
                 来自于 <a>info</a>
@@ -102,13 +88,12 @@
         </div>
 
         <div class="item">
-            <a href="/"><img src="/images/3.jpg" alt=""></a>
+            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/3.jpg" alt=""></a>
             <div class="item-wrap">
                 Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
             </div>
             <div class="item-user">
                 <a>username</a>
-                <a class="btn btn-info">查看</a>
             </div>
             <div class="item-from">
                 来自于 <a>info</a>
@@ -116,131 +101,38 @@
         </div>
 
         <div class="item">
-            <a href="/"><img src="/images/2.jpg" alt=""></a>
+            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/2.jpg" alt=""></a>
             <div class="item-wrap">
                 Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
             </div>
             <div class="item-user">
                 <a>username</a>
-                <a class="btn btn-info">查看</a>
             </div>
             <div class="item-from">
                 来自于 <a>info</a>
             </div>
         </div>
 
-        <div class="item">
-            <a href="/"><img src="/images/6.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
+        <div class="clear"></div>
+
+    </div>
+</div>
+<!--bootstrap弹窗-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
             </div>
-            <div class="item-user">
-                <a>username</a>
-                <a class="btn btn-info">查看</a>
+            <div class="modal-body">
+                <img class="modal-body-img" id="md-by" src="" alt="">
             </div>
-            <div class="item-from">
-                来自于 <a>info</a>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <a href="" class="btn btn-primary" id="md-vi">查看相似</a>
             </div>
         </div>
-
-        <div class="item">
-            <a href="/"><img src="/images/1.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-                <a class="btn btn-info">查看</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
-        <div class="item">
-            <a href="/"><img src="/images/1.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-                <a class="btn btn-info">查看</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
-        <div class="item">
-            <a href="/"><img src="/images/5.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-                <a class="btn btn-info">查看</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
-        <div class="item">
-            <a href="/"><img src="/images/4.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-                <a class="btn btn-info">查看</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
-        <div class="item">
-            <a href="/"><img src="/images/3.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-                <a class="btn btn-info">查看</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
-        <div class="item">
-            <a href="/"><img src="/images/2.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-                <a class="btn btn-info">查看</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
-        <div class="item">
-            <a href="/"><img src="/images/6.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-                <a class="btn btn-info">查看</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
     </div>
 </div>
 <%- include footer.ejs %>
