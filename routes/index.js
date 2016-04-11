@@ -335,47 +335,11 @@ router.get('/admin', function(req, res){
   });
 });
 
-
-//var request = require('request');
-//var cheerio = require('cheerio');
 router.post('/admin', function(req, res){
   var t_url = req.body.url;
-  var t_a = req.body.sel;
-  //request(t_url, function(err, res){
-  //  if (err){
-  //    req.flash('error', err);
-  //  }
-  //  var $ = cheerio.load(res.body.toString());
-  //  var j = $('.j');
-  //  var a = j.find('.a');
-  //  a.find('img').each(function(){
-  //    var that = $(this);
-  //    var tag = ['travel'];
-  //    var item = {
-  //      info: that.attr('alt'),
-  //      url: that.attr('src'),
-  //      name: that.attr('data-rootid')
-  //    };
-  //    request.head(item.url, function(err, res){
-  //      if (err) {
-  //        console.log('err: '+ err);
-  //        return false;
-  //      }
-  //      var imgStorePath = 'public/avatar/'+item.name;
-  //      var imgLinkPath = '/avatar/' + item.name;
-  //      request(item.url).pipe(fs.createWriteStream(imgStorePath)).on('close', function(){
-  //        console.log(item.name + ' done');
-  //      });
-  //      var newImage = new Images(imgLinkPath, item.name, 'admin', item.info,tag);
-  //      newImage.save(function(err){
-  //        if (err){
-  //          req.flash('error', err);
-  //        }
-  //      });
-  //    });
-  //  });
-  //});
-  var newProxy = new Proxy(t_url, ['旅行']);
+  var t_s = req.body.start;
+  var t_e = req.body.end;
+  var newProxy = new Proxy(t_url, t_s, t_e,['旅行']);
   newProxy.startproxy(function(err){
     if (err){
       req.flash('error', err);

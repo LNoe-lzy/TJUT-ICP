@@ -38,10 +38,12 @@ $(document).ready(function(){
 
     $('#proxy-btn').click(function(){
         var t_url = $('#t_url').val();
-        var t_a = $('#t-a').val();
+        var t_s = $('#t-s').val();
+        var t_e = $('#t-e').val();
         var par = {
             url: t_url,
-            sel: t_a
+            start: t_s,
+            end: t_e
         };
         $.ajax({
             url: '/admin',
