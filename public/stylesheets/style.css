@@ -310,3 +310,9 @@ input{
   display: inline-block;
   text-decoration: none;
 }
+
+/*分页*/
+.page{
+  width: 40%;
+  margin: 0 auto;
+}

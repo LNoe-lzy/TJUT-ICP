@@ -274,3 +274,72 @@ Images.updateUserName = function(name, newName,callback){
         });
     });
 };
+
+//分页设置
+Images.getPart = function(name, page, callback){
+   mongodb.open(function(err, db){
+       if (err) {
+           return callback(err);
+       }
+       db.collection('images', function(err, collections){
+           if (err) {
+               mongodb.close();
+               return callback(err);
+           }
+           var query = {};
+           if (name) {
+               query.name = name;
+           }
+           //使用count返回特定查询文档的总数
+           collections.count(query, function(err, total){
+               //根据query查询数据库,并跳过(page-1)*30个数据,并返回之后的30个数据
+               collections.find(query, {
+                   skip: (page - 1) * 30,
+                   limit: 30
+               }).sort({
+                   time: -1
+               }).toArray(function(err, img){
+                   mongodb.close();
+                   if (err){
+                       return callback(err);
+                   }
+                   callback(null, img, total);
+               });
+           });
+       });
+   });
+};
+
+Images.getPartTags = function(tagName, page, callback){
+    mongodb.open(function(err, db){
+        if (err) {
+            return callback(err);
+        }
+        db.collection('images', function(err, collections){
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+            var query = {};
+            if (tagName) {
+                query.tag = tagName;
+            }
+            //使用count返回特定查询文档的总数
+            collections.count(query, function(err, total){
+                //根据query查询数据库,并跳过(page-1)*30个数据,并返回之后的30个数据
+                collections.find(query, {
+                    skip: (page - 1) * 30,
+                    limit: 30
+                }).sort({
+                    time: -1
+                }).toArray(function(err, img){
+                    mongodb.close();
+                    if (err){
+                        return callback(err);
+                    }
+                    callback(null, img, total);
+                });
+            });
+        });
+    });
+};

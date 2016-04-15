@@ -9,7 +9,7 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var flash = require('connect-flash');
 //增加事件监听器,设置为100
-require('events').EventEmitter.prototype._maxListeners = 100;
+require('events').EventEmitter.prototype._maxListeners = 250;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');

@@ -4,11 +4,8 @@ var cheerio = require('cheerio');
 var fs = require('fs');
 var async = require('async');
 
-function Proxy(imgSourceUrl, start, end, imgTag){
+function Proxy(imgSourceUrl){
     this.sourceUrl = imgSourceUrl;
-    this.start = start;
-    this.end = end;
-    this.sourceTag = imgTag;
 }
 
 module.exports = Proxy;
@@ -16,65 +13,28 @@ module.exports = Proxy;
 //小爬虫
 Proxy.prototype.startproxy = function(callback){
     var data = {
-        url: this.sourceUrl,
-        start: this.start,
-        end: this.end,
-        tag: this.sourceTag
+        url: this.sourceUrl
     } ;
-    var urlList = [];
-    for (var i = data.start; i <= data.end; i++) {
-        var newUrl;
-        if ( i == 1 ) {
-            newUrl = data.url;
-        } else {
-            newUrl = data.url + '#!hot-p' + i;
-        }
-        urlList.push(newUrl);
-    }
-    async.eachSeries(urlList, function(is, callback){
-        request(is, function(err, res){
-            if (err) {
-                return callback(err);
-            }
-            var $ = cheerio.load(res.body.toString());
-            var j = $('.j');
-            var a = j.find('.a');
-            var arr = a.find('img').toArray();
-            console.log('开始抓取页面:' + is);
-            //采用async将下载img与存储img转为同步方法,解决异步方法下的读取数与保存数不一致bug
-            async.eachSeries(arr, function(i, callback){
-                var that = $(i);
-                var item = {
-                    info: that.attr('alt'),
-                    url: that.attr('src'),
-                    name: that.attr('data-rootid')
-                };
-                var imgLinkPath = '/avatar/' + item.name + '.jpg';
-                var img = {
-                    imagePath: imgLinkPath,
-                    imageName: item.name,
-                    name: 'admin',
-                    info: item.info,
-                    tag: data.tag
-                };
-                console.log(item.name + '开始获取!');
-                downloadImg(item.url, img, item.name, callback);
-            }, function(err){
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('当前页面抓取完成!');
-                }
-                callback();
-            });
-        });
-    }, function(err){
+    request(data.url, function(err, res){
         if (err) {
-            console.log(err);
-        }else{
-            console.log('已完成全部抓取!');
+            return callback(err);
         }
-        callback();
+        var $ = cheerio.load(res.body.toString());
+        var navRight= $('#dt-nav-right-inner');
+        var navGroup = navRight.find('.dt-nav-group');
+        var navA = navGroup.find('a').toArray();
+        async.eachSeries(navA, function(elem, callback){
+            var ehref = $(elem).attr('href');
+            var thref = 'http://www.duitang.com' + ehref;
+            var tag = elem.children[0].data;
+            requestUrl(thref, [tag], callback);
+        }, function(err){
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('获取完毕!');
+            }
+        });
     });
 };
 
@@ -99,6 +59,7 @@ function downloadImg(url, img, name, callback){
     });
 }
 
+//存储图片到数据库
 function saveImg(img,callback){
     mongodb.open(function(err, db){
         if (err){
@@ -119,6 +80,46 @@ function saveImg(img,callback){
                 console.log(img.imageName + '已存储完毕!');
                 callback(null);
             });
+        });
+    });
+}
+
+//request页面
+function requestUrl(url, tag, callback){
+    request(url, function(err, res){
+        if (err) {
+            return callback(err);
+        }
+        var $ = cheerio.load(res.body.toString());
+        var j = $('.j');
+        var a = j.find('.a');
+        var arr = a.find('img').toArray();
+        console.log('开始抓取页面:' + url);
+        //采用async将下载img与存储img转为同步方法,解决异步方法下的读取数与保存数不一致bug
+        async.eachSeries(arr, function(i, callback){
+            var that = $(i);
+            var item = {
+                info: that.attr('alt'),
+                url: that.attr('src'),
+                name: that.attr('data-rootid')
+            };
+            var imgLinkPath = '/avatar/' + item.name + '.jpg';
+            var img = {
+                imagePath: imgLinkPath,
+                imageName: item.name,
+                name: 'admin',
+                info: item.info,
+                tag: tag
+            };
+            console.log(item.name + '开始获取!');
+            downloadImg(item.url, img, item.name, callback);
+        }, function(err){
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('当前页面抓取完成!');
+            }
+            callback();
         });
     });
 }

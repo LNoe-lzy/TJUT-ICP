@@ -15,7 +15,12 @@
                 <%= image.info %>
             </div>
             <div class="item-from">
-                来自于 <a><%= image.tag %></a>
+                来自于
+                <% image.tag.forEach(function(tg, index){ %>
+                <% if (tg) { %>
+                <a href="/tags/<%= tg %>"><%= tg %></a>
+                <% } %>
+                <% }) %>
             </div>
             <% } %>
         </div>

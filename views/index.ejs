@@ -1,6 +1,6 @@
 <%- include header.ejs %>
 <div class="main-container">
-    <div class="masonry-container">
+    <div class="masonry-container" id="masonry-container">
         <% images.forEach(function(image, index){ %>
         <div class="item">
             <div class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn">
@@ -34,87 +34,8 @@
             <% } %>
         </div>
         <% }) %>
-
-        <div class="item">
-            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/1.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
-        <div class="item">
-            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/1.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
-        <div class="item">
-            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/5.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
-        <div class="item">
-            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/4.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
-        <div class="item">
-            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/3.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
-        <div class="item">
-            <a class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn"><img src="/images/2.jpg" alt=""></a>
-            <div class="item-wrap">
-                Kaweco Liliput Fireblue Fountain Pen at FahrneysPens.com
-            </div>
-            <div class="item-user">
-                <a>username</a>
-            </div>
-            <div class="item-from">
-                来自于 <a>info</a>
-            </div>
-        </div>
-
         <div class="clear"></div>
-
+        <%- include paging.ejs %>
     </div>
 </div>
 <!--bootstrap弹窗-->

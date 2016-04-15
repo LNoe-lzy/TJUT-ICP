@@ -8,17 +8,21 @@ User = require('../models/user');
 Images = require('../models/image');
 Proxy = require('../models/proxy');
 
-/* GET home page. */
-router.get('/', function(req, res) {
-  Images.getAll(null, function(err, images){
-    if (err){
-      req.flash('error', err);
-      return res.redirect('/');
+//GET home page.
+//通过分页效果渲染首页
+router.get('/', function(req, res){
+  var page = req.query.page ? parseInt(req.query.page) : 1;
+  Images.getPart(null, page, function(err, images, total){
+    if (err) {
+      images = [];
     }
     res.render('index', {
       title: 'LeeImage',
       user: req.session.user,
       images: images,
+      page: page,
+      isFirstPage: (page - 1) == 0,
+      isLastPage: ((page - 1) * 30 + images.length) == total,
       success: req.flash('success').toString(),
       error: req.flash('error').toString()
     });
@@ -281,8 +285,8 @@ router.get('/remove/:name/:imageName', function(req, res){
 });
 router.get('/tags/:tag', checkLogin);
 router.get('/tags/:tag', function(req, res){
-  Images.getTags(req.params.tag, function(err, tags){
-    console.log(req.params.tag);
+  var page = req.query.page ? parseInt(req.query.page) : 1;
+  Images.getPartTags(req.params.tag, page, function(err, tags, total){
     if (err){
       req.flash('error', err);
       return res.redirect('/');
@@ -291,6 +295,9 @@ router.get('/tags/:tag', function(req, res){
       title: 'tag',
       tags: tags,
       user: req.session.user,
+      page: page,
+      isFirstPage: (page - 1) == 0,
+      isLastPage: ((page - 1) * 30 + tags.length) == total,
       success: req.flash('success').toString(),
       error: req.flash('error').toString()
     });
@@ -337,9 +344,7 @@ router.get('/admin', function(req, res){
 
 router.post('/admin', function(req, res){
   var t_url = req.body.url;
-  var t_s = req.body.start;
-  var t_e = req.body.end;
-  var newProxy = new Proxy(t_url, t_s, t_e,['旅行']);
+  var newProxy = new Proxy(t_url);
   newProxy.startproxy(function(err){
     if (err){
       req.flash('error', err);
