@@ -3,6 +3,10 @@ var router = express.Router();
 var crypto = require('crypto');
 var formidable = require('formidable');
 var fs = require('fs');
+var multer = require('multer');
+var upload = multer({dest: 'public/avatar/tmp/'});
+
+var imgUpload = require('../models/upload');
 
 User = require('../models/user');
 Images = require('../models/image');
@@ -108,70 +112,17 @@ router.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-router.get('/:name/new', checkLogin);
-router.get('/:name/new', function(req, res){
-  User.get(req.params.name, function(err, user){
-    if (!user){
-      req.flash('error', '用户不存在!');
-      return res.redirect('/');
-    }
-    res.render('new', {
-      title: user.name,
-      user: req.session.user,
-      success: req.flash('success').toString(),
-      error: req.flash('error').toString()
-    });
-  });
-});
-
-router.post('/:name/new', checkLogin);
-router.post('/:name/new', function(req, res) {
-  var username = req.params.name;
-  var form = new formidable.IncomingForm();   //创建上传表单
-  form.encoding = 'utf-8';		//设置编辑
-  form.uploadDir = 'public/avatar/';	 //设置上传目录
-  form.keepExtensions = true;	 //保留后缀
-  form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
-  form.parse(req, function(err, fields, files) {
-    if (err) {
-      req.flash('error', err);
-      return res.redirect('/');
-    }
-    var extName = '';  //后缀名
-    switch (files.fulAvatar.type) {
-      case 'image/pjpeg':
-        extName = 'jpg';
-        break;
-      case 'image/jpeg':
-        extName = 'jpg';
-        break;
-      case 'image/png':
-        extName = 'png';
-        break;
-      case 'image/x-png':
-        extName = 'png';
-        break;
-    }
-    if(extName.length == 0){
-      req.flash('error', '只支持png和jpg格式图片!');
-      return res.redirect('/');
-    }
-    var imageName = username + Math.random();
-    var avatarName = imageName + '.' + extName;
-    var newPath = form.uploadDir + avatarName;
-    fs.renameSync(files.fulAvatar.path, newPath);//重命名
-    //将图片信息存储到数据库
-    var imgpath = '/avatar/' + avatarName;
-    var newImages = new Images(imgpath, imageName, username);
-    newImages.save(function(err){
-      if (err){
-        req.flash('error', err);
-        return res.redirect('/');
-      }
-    });
-  });
-  req.flash('success', '上传成功!');
-  res.redirect('/');
+//用户上传图像
+router.post('/new', checkLogin);
+router.post('/new', upload.single('fulAvatar'),function(req, res) {
+  var username = req.session.user.name;
+  //获取临时存储位置
+  var tmp_path = req.file.path;
+  //获取文件名称
+  var file_name = req.file.filename;
+  //获取文件的mime类型以修改扩展名
+  var mimeType = req.file.mimetype;
+  imgUpload.imgUpload(tmp_path, file_name, mimeType, username, req, res);
 });
 
 router.get('/u/:name', checkLogin);
@@ -283,6 +234,7 @@ router.get('/remove/:name/:imageName', function(req, res){
     res.redirect('/u/' + req.session.user.name);
   });
 });
+
 router.get('/tags/:tag', checkLogin);
 router.get('/tags/:tag', function(req, res){
   var page = req.query.page ? parseInt(req.query.page) : 1;
@@ -323,16 +275,40 @@ router.get('/search', function(req, res){
 });
 
 //图像检索界面
-router.get('/imgsearch', checkLogin);
-router.get('/imgsearch', function(req, res){
-  res.render('imgsearch', {
-    title: "图像搜索",
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
-  });
+router.post('/imgsearch', checkLogin);
+router.post('/imgsearch', upload.single('imgsearch'), function(req, res){
+  //获取临时存储位置
+  var tmp_path = req.file.path;
+  //获取文件名称
+  var file_name = req.file.filename;
+  //获取文件的mime类型以修改扩展名
+  var mimeType = req.file.mimetype;
+  imgUpload.imgSearch(tmp_path, file_name, mimeType, req, res);
 });
 
+//返回图像检索结果
+router.get('/results', checkLogin);
+router.get('/results', function(req, res){
+  res.render('results', {
+    title: "搜索结果",
+    user: req.session.user,
+    results: req.session.searchPath,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  })
+});
+
+//用于站内开发测试
+router.get('/test', function(req, res){
+  res.render('test', {
+    title:'test'
+  });
+});
+router.post('/file-upload', upload.single('img'),function(req, res){
+
+});
+
+//爬虫页面
 router.get('/admin', function(req, res){
   res.render('admin', {
     title: "admin",

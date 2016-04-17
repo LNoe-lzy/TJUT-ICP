@@ -44,7 +44,7 @@ function downloadImg(url, img, name, callback){
         if (err) {
             return callback(err);
         }
-        var imgStorePath = 'public/avatar/' + name + '.jpg';
+        var imgStorePath = 'public/avatar/proxy/' + name + '.jpg';
         fs.exists(imgStorePath, function(exits){
             if (exits) {
                 console.log(name + '已存在!');
@@ -103,7 +103,7 @@ function requestUrl(url, tag, callback){
                 url: that.attr('src'),
                 name: that.attr('data-rootid')
             };
-            var imgLinkPath = '/avatar/' + item.name + '.jpg';
+            var imgLinkPath = '/avatar/proxy/' + item.name + '.jpg';
             var img = {
                 imagePath: imgLinkPath,
                 imageName: item.name,

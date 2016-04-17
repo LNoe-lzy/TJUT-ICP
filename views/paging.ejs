@@ -2,7 +2,6 @@
 <div class="page">
     <nav>
         <ul class="pager">
-            <% if (!isFirstPage && !isLastPage) { %>
             <% if (!isFirstPage) { %>
             <li class="previous"><a href="?page=<%= page - 1 %>"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a></li>
             <% } else {%>
@@ -12,7 +11,6 @@
             <li class="next"><a href="?page=<%= page + 1 %>"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
             <% } else { %>
             <li class="next disabled"><a><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
-            <% } %>
             <% } %>
         </ul>
     </nav>

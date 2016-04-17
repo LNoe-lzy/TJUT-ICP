@@ -29,12 +29,24 @@
                     <span class="input-group-addon" id="basic-addon1"><a class="logo" href="/"></a> </span>
                     <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1" name="keyword">
                     <span class="input-group-addon" id="basic-addon1">
-                        <a href="/imgsearch">
-                            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                        </a>
+                        <span id="imgSearch" class="glyphicon glyphicon-picture" aria-hidden="true"></span>
                     </span>
                 </div>
             </form>
+            <div id="upload">
+                <div class="upload-info">
+                    <form method="post" action="/imgsearch" enctype='multipart/form-data'>
+                        <div class="upload-wrap">
+                            <input type="file" class="upload-pic" name="imgsearch" id="uploadInput">
+                            <span class="upload-text" id="uploadSpan">本地上传图片</span>
+                        </div>
+                        <button class="btn btn-info upload-submit" type="submit">搜索</button>
+                    </form>
+                </div>
+                <a class="upload-remove btn btn-danger" id="upload-remove">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            </div>
         </div>
         <div class="headerContainer-right col-md-2">
             <% if (user) { %>
@@ -51,10 +63,25 @@
         </div>
     </div>
 </div>
-<div class="footer-buttons">
+<div class="footer-buttons" id="footer-buttons">
     <% if (user) { %>
-    <a href="/<%= user.name %>/new" class="plus">
+    <a class="plus">
         <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>
     </a>
     <% } %>
+</div>
+<!--新建图像-->
+<div id="new">
+    <div class="upload-info">
+        <form method="post" action="/new" enctype='multipart/form-data'>
+            <div class="upload-wrap">
+                <input type="file" class="upload-pic" name="fulAvatar" id="newInput">
+                <span class="upload-text" id="newSpan">本地上传图片</span>
+            </div>
+            <button class="btn btn-info upload-submit" type="submit">创建</button>
+        </form>
+    </div>
+    <a class="upload-remove btn btn-danger" id="new-remove">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+    </a>
 </div>

@@ -20,6 +20,7 @@
     "jquery": "^2.2.3",
     "mongodb": "^2.1.7",
     "morgan": "~1.6.1",
+    "multer": "^1.1.0",
     "multiparty": "^4.1.2",
     "request": "^2.70.0",
     "serve-favicon": "~2.3.0"

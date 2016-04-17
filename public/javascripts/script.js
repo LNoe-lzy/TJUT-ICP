@@ -48,6 +48,31 @@ $(document).ready(function(){
             dataType: 'json'
         });
     });
+
+    $('#imgSearch').click(function(){
+        $('#upload').fadeIn();
+    });
+    $('#upload-remove').click(function(){
+        $('#upload').fadeOut();
+        $('#uploadSpan').html('本地上传图片');
+    });
+
+    $('#footer-buttons').click(function(){
+        $('#new').fadeIn();
+    });
+
+    $('#new-remove').click(function(){
+        $('#new').fadeOut();
+        $('#newSpan').html('本地上传图片');
+    });
+
+    $('#uploadInput').change(function(){
+        $('#uploadSpan').html('已选择图片');
+    });
+
+    $('#newInput').change(function(){
+        $('#newSpan').html('已选择图片');
+    });
 });
 
 $(function () {

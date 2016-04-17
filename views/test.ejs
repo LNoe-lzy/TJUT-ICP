@@ -9,42 +9,10 @@
 </head>
 <body>
 <div class="post-container">
-    <div class="post-auth">
-        <form method="post">
-            <h1 class="title-auth">Join.</h1>
-            <p class="subtitle-auth">Joining allows you to make private lists</p>
-            <div class="input-symbol">
-                <input type="text" class="form-control" id="InputUsername" placeholder="username" name="name">
-            </div>
-            <div class="input-symbol">
-                <input type="email" class="form-control" id="InputEmail1" placeholder="Email" name="email">
-            </div>
-            <div class="input-symbol">
-                <input type="password" class="form-control" id="InputPassword1" placeholder="Password" name="password">
-            </div>
-            <div class="input-symbol">
-                <input type="password" class="form-control" id="InputPassword2" placeholder="Password repeat" name="passwordrep">
-            </div>
-            <button type="submit" class="btn-post">Submit</button>
-        </form>
-        <a href="/signin" class="link-auth-alt">Have an account? Sign in</a>
-    </div>
+    <form method="post" enctype="multipart/form-data" action="/file-upload">
+        <input type="file" name="img">
+        <input type="submit">
+    </form>
 </div>
-<script>
-    $(function(){
-        $('#sub').click(function(){
-            var xml = {
-                name: $('#InputUsername').val(),
-                password: $('#InputPassword1').val(),
-                email: $('#InputEmail1').val()
-            }
-            $.ajax({
-                type:"POST",
-                url:"/test",
-                data: {xml: xml}
-            });
-        });
-    });
-</script>
 </body>
 </html>
