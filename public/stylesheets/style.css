@@ -62,6 +62,7 @@ input{
   background-image: url(../images/bg2.png);
   position: relative;
   float: left;
+  display: none;
 }
 .item .item-image{
   display: block;
