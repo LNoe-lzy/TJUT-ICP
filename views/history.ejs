@@ -1,0 +1,95 @@
+<%- include header.ejs %>
+<div class="fixed-header">
+    <div class="container">
+        <% if (currentUser.name == user.name) { %>
+        <a class="btn btn-danger col-sm-1" data-toggle="modal" data-target="#myModal">编辑</a>
+        <div class="dropdown col-sm-1">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li><a href="#">编辑</a></li>
+                <li><a href="#">帮助</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="/logout">退出</a></li>
+            </ul>
+        </div>
+        <a href="/u/<%= currentUser.name %>/history" class="btn btn-info col-sm-1">浏览记录</a>
+        <% } %>
+    </div>
+</div>
+<div class="user-title">
+    <div class="user-title-info">
+        <h1 id="user-name"><%= currentUser.name %></h1>
+    </div>
+</div>
+<div class="user-text">
+    <div class="user-text-info">
+        <p><%= currentUser.text %></p>
+    </div>
+</div>
+<div class="main-container">
+    <div class="masonry-container">
+        <% history.forEach(function(his, index){ %>
+        <div class="item a">
+            <% if (his.name == user.name) { %>
+            <a href="/remove/<%= user.name %>/<%= his.imageName %>" class="remove btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+            <% } %>
+            <a href="/info/<%= his.imageName %>" class="item-image"><img src="<%= his.imagePath %>" alt=""></a>
+            <div class="item-user">
+                <a><%= his.name %></a>
+            </div>
+            <% if (!his.info) { %>
+            <div class="item-from">
+                请您点击<a href="/<%= user.name %>/edit/<%= his.imageName %>"><i>编辑</i></a> 进行编辑!
+            </div>
+            <% } else { %>
+            <div class="item-wrap">
+                <%= his.info %>
+            </div>
+            <div class="item-from">
+                来自于
+                <% his.tag.forEach(function(tg, index){ %>
+                <% if (tg) { %>
+                <a href="/tags/<%= tg %>"><%= tg %></a>
+                <% } %>
+                <% }) %>
+            </div>
+            <% } %>
+        </div>
+        <% }) %>
+
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">编辑我的信息</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">用户名</span>
+                        <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" id="edit-name">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">邮 箱</span>
+                        <input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon1" id="edit-email">
+                    </div>
+                    <br>
+                    <textarea class="form-control" rows="3" placeholder="个性签名..." id="edit-text"></textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <a class="btn btn-primary" id="edit-edit" href="/">修改</a>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include footer.ejs %>

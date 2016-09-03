@@ -4,6 +4,8 @@ var cheerio = require('cheerio');
 var fs = require('fs');
 var async = require('async');
 
+var Tags = require('./tag');
+
 function Proxy(imgSourceUrl){
     this.sourceUrl = imgSourceUrl;
 }
@@ -72,7 +74,7 @@ function saveImg(img,callback){
             }
             collections.update(img, img ,{
                 upsert: true
-            },function(err){
+            }, function(err){
                 mongodb.close();
                 if (err){
                     return callback;
@@ -97,6 +99,14 @@ function requestUrl(url, tag, callback){
         console.log('开始抓取页面:' + url);
         //采用async将下载img与存储img转为同步方法,解决异步方法下的读取数与保存数不一致bug
         async.eachSeries(arr, function(i, callback){
+            var date = new Date();
+            var time = {
+                date: date,
+                year: date.getFullYear(),
+                month: date.getFullYear() + "-" + (date.getMonth() + 1),
+                day: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
+                minute: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+            };
             var that = $(i);
             var item = {
                 info: that.attr('alt'),
@@ -108,9 +118,13 @@ function requestUrl(url, tag, callback){
                 imagePath: imgLinkPath,
                 imageName: item.name,
                 name: 'admin',
+                time: time,
                 info: item.info,
                 tag: tag
             };
+            //存储标签信息以及海报信息
+            var newTag = new Tags(tag[0], imgLinkPath);
+            newTag.save();
             console.log(item.name + '开始获取!');
             downloadImg(item.url, img, item.name, callback);
         }, function(err){

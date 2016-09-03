@@ -5,11 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var settings = require('./settings');
+var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var flash = require('connect-flash');
-//增加事件监听器,设置为100
-require('events').EventEmitter.prototype._maxListeners = 250;
+//增加事件监听器,设置为1000
+require('events').EventEmitter.prototype._maxListeners = 1000;
+
+mongoose.connect('mongodb://localhost/image');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');

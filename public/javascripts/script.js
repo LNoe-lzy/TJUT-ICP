@@ -6,13 +6,13 @@ $(document).ready(function(){
         var that = $(this);
         var target = that.children();
         var imgSrc = target.attr("src");
-        var imgName = target.attr('data-imgname');
+        var imgId = target.attr('data-imgId');
         $(this).click(function(){
             $('#md-by').attr({
                 src: imgSrc
             });
             $('#md-vi').attr({
-                href: '/info/' + imgName
+                href: '/info/' + imgId
             })
         });
     });
@@ -29,7 +29,7 @@ $(document).ready(function(){
             text: newText
         };
         $.ajax({
-            url: '/u/:name',
+            url: '/u/:id',
             data: par,
             type: 'post',
             dataType: 'json'
@@ -57,7 +57,7 @@ $(document).ready(function(){
         $('#uploadSpan').html('本地上传图片');
     });
 
-    $('#footer-buttons').click(function(){
+    $('#plus').click(function(){
         $('#new').fadeIn();
     });
 
@@ -73,6 +73,29 @@ $(document).ready(function(){
     $('#newInput').change(function(){
         $('#newSpan').html('已选择图片');
     });
+
+    //显示标签栏
+    $('#tag-bar').click(function(){
+        $('#tag-container').toggle(500);
+    });
+
+    //返回顶部
+    $(function(){
+        $(window).scroll(function(){
+            if ($(window).scrollTop() > 300){
+                $('#totop').fadeIn();
+            } else {
+                $('#totop').fadeOut();
+            }
+        });
+
+        $('#totop').click(function(){
+            $('body, html').animate({
+                scrollTop: 0
+            });
+        });
+    });
+
 });
 
 $(function () {

@@ -15,6 +15,7 @@
                 <li><a href="/logout">退出</a></li>
             </ul>
         </div>
+        <a href="/u/<%= currentUser._id %>/history" class="btn btn-info col-sm-1">浏览记录</a>
         <% } %>
     </div>
 </div>
@@ -33,7 +34,7 @@
         <% images.forEach(function(image, index){ %>
         <div class="item">
             <% if (image.name == user.name) { %>
-            <a href="/remove/<%= user.name %>/<%= image.imageName %>" class="remove btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+            <a href="/remove/<%= user.name %>/<%= image._id %>" class="remove btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
             <% } %>
             <a href="/info/<%= image.imageName %>" class="item-image"><img src="<%= image.imagePath %>" alt=""></a>
             <div class="item-user">
