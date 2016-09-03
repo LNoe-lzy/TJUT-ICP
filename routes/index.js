@@ -12,16 +12,16 @@ User = require('../models/user');
 Images = require('../models/image');
 Proxy = require('../models/proxy');
 History = require('../models/history');
-Tag = require('../models/tag');
+Tags = require('../models/tag');
 
 //GET home page.
 //通过分页效果渲染首页
 router.get('/', function(req, res){
   var page = req.query.page ? parseInt(req.query.page) : 1;
   var user = req.session.user;
-  Tag.getAll(function(err, tags){
+  Tags.find(null, function (err, tags) {
     if (err) {
-      console.log(err)
+      console.log(err);
     }
     // 分页查询
     Images.find(null).count().exec(function (err, total) {
@@ -30,36 +30,19 @@ router.get('/', function(req, res){
       }
       Images.find(null).skip((page - 1) * 30).limit(30).exec(function (err, images) {
         if (err) {
-          images = [];
+          console.log(err);
         }
-        if (user != null) {
-          History.getPart(user.name, function(err, msg){
-            res.render('index', {
-              title: 'LeeImage',
-              user: req.session.user,
-              t: tags,
-              msg: msg,
-              images: images,
-              page: page,
-              isFirstPage: (page - 1) === 0,
-              isLastPage: ((page - 1) * 30 + images.length) === total,
-              success: req.flash('success').toString(),
-              error: req.flash('error').toString()
-            });
-          });
-        } else {
-          res.render('index', {
-            title: 'LeeImage',
-            user: req.session.user,
-            t: tags,
-            images: images,
-            page: page,
-            isFirstPage: (page - 1) == 0,
-            isLastPage: ((page - 1) * 30 + images.length) == total,
-            success: req.flash('success').toString(),
-            error: req.flash('error').toString()
-          });
-        }
+        res.render('index', {
+          title: 'LeeImage',
+          user: req.session.user,
+          t: tags,
+          images: images,
+          page: page,
+          isFirstPage: (page - 1) === 0,
+          isLastPage: ((page - 1) * 30 + images.length) === total,
+          success: req.flash('success').toString(),
+          error: req.flash('error').toString()
+        });
       });
     });
   });
@@ -113,15 +96,15 @@ router.post('/signup', checkNotLogin);
 router.post('/signup', function(req, res){
   var name = req.body.name,
       password = req.body.password,
-      passwordre = req.body.passwordrep;
+      passwordre = req.body.passwordrep,
+      md5 = crypto.createHash('md5');
   if (passwordre !== password){
     req.flash('error', '两次输入的密码不一样!');
     return res.redirect('/signup');
   }
-  var md5 = crypto.createHash('md5'),
-      password = md5.update(req.body.password).digest('hex');
+  password = md5.update(req.body.password).digest('hex');
   var newUser = new User({
-    name: req.body.name,
+    name: name,
     email: req.body.email,
     password: password
   });
@@ -184,28 +167,21 @@ router.get('/u/:id', function(req, res) {
         req.flash('error', err);
         return res.redirect('/');
       }
-      History.getPart(req.session.user.name, function(err, msg) {
-        if (err) {
-          console.log(err);
-        }
-        res.render('user', {
-          title: user.name,
-          user: req.session.user,
-          msg: msg,
-          currentUser: user,
-          images: images,
-          success: req.flash('success').toString(),
-          error: req.flash('error').toString()
-        });
-      })
+      res.render('user', {
+        title: user.name,
+        user: req.session.user,
+        currentUser: user,
+        images: images,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      });
     });
   });
 });
 
 router.post('/u/:id', checkLogin);
 router.post('/u/:id', function(req, res){
-  var name = req.session.user.name,
-      newName = req.body.newName,
+  var newName = req.body.newName,
       email = req.body.email,
       text = req.body.text;
   User.update({
@@ -238,24 +214,19 @@ router.get('/u/:id/history', function(req, res) {
       req.flash('error', '用户不存在!');
       return res.redirect('/');
     }
-    History.getAll(currentUser.name, function(err, his) {
+    History.find({
+      userId: req.session.user._id
+    }, function (err, his) {
       if (err) {
-        req.flash('error', err);
-        return res.redirect('/');
+        console.log(err);
       }
-      History.getPart(currentUser.name, function(err, msg) {
-        if (err) {
-          console.log(err);
-        }
-        res.render('history', {
-          title: user.name,
-          user: currentUser,
-          history: his,
-          msg: msg,
-          currentUser: user,
-          success: req.flash('success').toString(),
-          error: req.flash('error').toString()
-        });
+      res.render('history', {
+        title: user.name,
+        user: currentUser,
+        history: his,
+        currentUser: user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
       });
     });
   });
@@ -271,14 +242,11 @@ router.get('/u/edit/:id/:imageName', function(req, res) {
       req.flash('error', '用户不存在!');
       return res.redirect('/');
     }
-    History.getPart(currentUser.name, function(err, msg){
-      res.render('edit', {
-        title: user.name,
-        user: currentUser,
-        msg: msg,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
-      });
+    res.render('edit', {
+      title: user.name,
+      user: currentUser,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
     });
   });
 });
@@ -312,7 +280,10 @@ router.get('/info/:imageId', function(req, res){
     if (err) {
       console.log(err);
     }
-    var newHistory = new History(req.session.user.name, image);
+    var newHistory = new History({
+      userId: req.session.user._id,
+      imageId: image._id
+    });
     newHistory.save(function(err){
       if (err) {
         req.flash('error', err);
@@ -334,19 +305,16 @@ router.get('/info/:imageId', function(req, res){
             if (err) {
               console.log(err);
             }
-            History.getPart(req.session.user.name, function(err, msg){
-              res.render('info', {
-                title: 'info',
-                image: image,
-                images: images,
-                msg: msg,
-                user: req.session.user,
-                page: page,
-                isFirstPage: (page - 1) == 0,
-                isLastPage: ((page - 1) * 30 + images.length) == total,
-                success: req.flash('success').toString(),
-                error: req.flash('error').toString()
-              });
+            res.render('info', {
+              title: 'info',
+              image: image,
+              images: images,
+              user: req.session.user,
+              page: page,
+              isFirstPage: (page - 1) == 0,
+              isLastPage: ((page - 1) * 30 + images.length) == total,
+              success: req.flash('success').toString(),
+              error: req.flash('error').toString()
             });
           });
         });
@@ -386,21 +354,15 @@ router.get('/tags/:tag', function(req, res){
       if (err) {
         console.log(err)
       }
-      History.getPart(req.session.user.name, function(err, msg){
-        if (err) {
-          console.log(err);
-        }
-        res.render('tag', {
-          title: 'tag',
-          tags: tags,
-          user: req.session.user,
-          page: page,
-          msg: msg,
-          isFirstPage: (page - 1) == 0,
-          isLastPage: ((page - 1) * 30 + tags.length) == total,
-          success: req.flash('success').toString(),
-          error: req.flash('error').toString()
-        });
+      res.render('tag', {
+        title: 'tag',
+        tags: tags,
+        user: req.session.user,
+        page: page,
+        isFirstPage: (page - 1) == 0,
+        isLastPage: ((page - 1) * 30 + tags.length) == total,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
       });
     });
   });
@@ -417,18 +379,12 @@ router.get('/search', function(req, res){
       req.flash('error', err);
       return res.redirect('/');
     }
-    History.getPart(req.session.user.name, function(err, msg){
-      if (err) {
-        console.log(err);
-      }
-      res.render('search', {
-        title: "搜索结果",
-        searchs: searchs,
-        user: req.session.user,
-        msg: msg,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
-      });
+    res.render('search', {
+      title: "搜索结果",
+      searchs: searchs,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
     });
   });
 });
@@ -448,18 +404,12 @@ router.post('/imgsearch', upload.single('imgsearch'), function(req, res){
 //返回图像检索结果
 router.get('/results', checkLogin);
 router.get('/results', function(req, res){
-  History.getPart(req.session.user.name, function(err, msg){
-    if (err) {
-      console.log(err);
-    }
-    res.render('results', {
-      title: "搜索结果",
-      user: req.session.user,
-      results: req.session.searchPath,
-      msg: msg,
-      success: req.flash('success').toString(),
-      error: req.flash('error').toString()
-    });
+  res.render('results', {
+    title: "搜索结果",
+    user: req.session.user,
+    results: req.session.searchPath,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
