@@ -5,6 +5,7 @@ var formidable = require('formidable');
 var fs = require('fs');
 var multer = require('multer');
 var upload = multer({dest: 'public/avatar/tmp/'});
+var async = require('async');
 
 var imgUpload = require('../models/upload');
 
@@ -13,6 +14,7 @@ Images = require('../models/image');
 Proxy = require('../models/proxy');
 History = require('../models/history');
 Tags = require('../models/tag');
+Tool = require('../models/tool');
 
 //GET home page.
 //通过分页效果渲染首页
@@ -220,14 +222,35 @@ router.get('/u/:id/history', function(req, res) {
       if (err) {
         console.log(err);
       }
-      res.render('history', {
-        title: user.name,
-        user: currentUser,
-        history: his,
-        currentUser: user,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
-      });
+      var hisArray = [];
+      var hisAsync = function () {
+        async.mapSeries(his, function (e, callback) {
+          Images.findById(e.imageId, function (err, img) {
+            if (err) {
+              console.log(err);
+            }
+            hisArray.push(img);
+            callback();
+          });
+        }, function (err) {
+          if (err) {
+            console.log(err);
+          }
+          res.render('history', {
+            title: user.name,
+            user: currentUser,
+            history: hisArray.sort(Tool.keysort('_id', true)),
+            currentUser: user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+          });
+        });
+      };
+      hisAsync(function (err) {
+        if (err) {
+          console.log(err);
+        }
+      })
     });
   });
 });

@@ -1,7 +1,7 @@
 <%- include header.ejs %>
 <div class="main-container">
     <div class="info-con row">
-        <div class="info-item b">
+        <div class="info-item">
             <img src="<%= image.imagePath %>" alt="">
             <div class="item-user">
                 <a><%= image.name %></a>
@@ -15,7 +15,7 @@
                 <%= image.info %>
             </div>
             <div class="item-from">
-                来自于
+                <span class="glyphicon glyphicon-tags"></span>
                 <% image.tag.forEach(function(tg, index){ %>
                 <% if (tg) { %>
                 <a href="/tags/<%= tg %>"><%= tg %></a>
@@ -24,42 +24,44 @@
             </div>
             <% } %>
         </div>
-        <div class="info-tags">
-            <% images.forEach(function(imgs, index){ %>
-            <div class="item c">
-                <div class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn">
-                    <img src="<%= imgs.imagePath %>" data-imgname="<%= imgs.imageName %>">
-                </div>
+        <div class="info-tagcon">
+            <div id="info-tags">
+                <% images.forEach(function(imgs, index){ %>
+                <div class="item">
+                    <div class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn">
+                        <img src="<%= imgs.imagePath %>" data-imgname="<%= imgs.imageName %>">
+                    </div>
 
-                <% if (user) { %>
-                <a class="item-user"  href="/u/<%= imgs.name %>">
-                    <b><%= imgs.name %></b>
-                </a>
-                <% } %>
-
-                <% if (user) {%>
-                <% if ((!imgs.info)&&(imgs.name == user.name)) { %>
-                <div class="item-from">
-                    请您点击<a href="/<%= imgs.name %>/edit/<%= imgs.imageName %>"><i>编辑</i></a> 进行编辑!
-                </div>
-                <% } else { %>
-                <div class="item-wrap">
-                    <%= imgs.info %>
-                </div>
-                <div class="item-from">
-                    来自于
-                    <% imgs.tag.forEach(function(tg, index){ %>
-                    <% if (tg) { %>
-                    <a href="/tags/<%= tg %>"><%= tg %></a>
+                    <% if (user) { %>
+                    <a class="item-user"  href="/u/<%= imgs.name %>">
+                        <b><%= imgs.name %></b>
+                    </a>
                     <% } %>
-                    <% }) %>
+
+                    <% if (user) {%>
+                    <% if ((!imgs.info)&&(imgs.name == user.name)) { %>
+                    <div class="item-from">
+                        请您点击<a href="/<%= imgs.name %>/edit/<%= imgs.imageName %>"><i>编辑</i></a> 进行编辑!
+                    </div>
+                    <% } else { %>
+                    <div class="item-wrap">
+                        <%= imgs.info %>
+                    </div>
+                    <div class="item-from">
+                        <span class="glyphicon glyphicon-tags"></span>
+                        <% imgs.tag.forEach(function(tg, index){ %>
+                        <% if (tg) { %>
+                        <a href="/tags/<%= tg %>"><%= tg %></a>
+                        <% } %>
+                        <% }) %>
+                    </div>
+                    <% } %>
+                    <% } %>
                 </div>
-                <% } %>
-                <% } %>
+                <% }) %>
+                <div class="clear"></div>
             </div>
-            <% }) %>
-        <div class="clear"></div>
-        <%- include paging.ejs %>
+            <%- include paging.ejs %>
         </div>
     </div>
 </div>
@@ -76,7 +78,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <a href="" class="btn btn-primary" id="md-vi">查看相似</a>
+                <a href="" class="btn btn-orange" id="md-vi">查看相似</a>
             </div>
         </div>
     </div>

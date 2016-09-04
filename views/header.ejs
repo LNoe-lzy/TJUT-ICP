@@ -7,7 +7,7 @@
     <script src="/javascripts/jquery.min.js"></script>
     <script src="/javascripts/bootstrap.min.js"></script>
     <script src="/javascripts/jquery.easing.min.js"></script>
-    <script src="/javascripts/jquery.fadeloader.js"></script>
+    <script src="/javascripts/masonry-docs.min.js"></script>
     <script type="text/javascript" src="/javascripts/script.js"></script>
 </head>
 <body>
@@ -23,7 +23,7 @@
     <strong><%= error %></strong>
 </div>
 <% } %>
-<div class="header a">
+<div class="header">
     <div class="container">
         <div class="headerContainer-left">
             <form action="/search" method="get">
@@ -53,26 +53,29 @@
         <div class="headerContainer-right">
             <% if (user) { %>
             <div class="userinfo">
-                <div class="btn-group">
-                    <a href="/u/<%= user._id %>" class="btn btn-default"><%= user.name %></a>
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-
-                        </ul>
-                    </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-user"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/u/<%= user._id %>">查看信息</a></li>
+                        <li><a href="/logout">退出</a> </li>
+                    </ul>
                 </div>
-                <a href="/logout" class="btn btn-danger">
-                    <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
-                </a>
-                <a class="btn btn-info" id="tag-bar">分类</a>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+
+                    </ul>
+                </div>
+                <a class="btn btn-orange" id="tag-bar">分类</a>
             </div>
             <% } else  { %>
             <div class="userinfo">
-                <a href="/login" class="btn btn-info">登录</a>
-                <a href="/signup" class="btn btn-success">注册</a>
+                <a href="/login" class="btn btn-orange">登录</a>
+                <a href="/signup" class="btn btn-default">注册</a>
             </div>
             <% } %>
         </div>

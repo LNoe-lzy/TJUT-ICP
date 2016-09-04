@@ -1,6 +1,6 @@
 <!--分页导航-->
 <div class="page">
-    <nav class="c" style="display: none">
+    <div>
         <ul class="pager">
             <% if (!isFirstPage) { %>
             <li class="previous"><a href="?page=<%= page - 1 %>"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a></li>
@@ -13,5 +13,5 @@
             <li class="next disabled"><a><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
             <% } %>
         </ul>
-    </nav>
+    </div>
 </div>

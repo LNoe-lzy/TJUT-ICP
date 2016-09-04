@@ -96,12 +96,33 @@ $(document).ready(function(){
         });
     });
 
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+
+
+    $(function() {
+        $('.masonry-container').each(function () {
+            var that = $(this);
+            that.imagesLoaded(function() {
+                that.masonry({
+                    itemSelector: '.item',
+                    isAnimated: true
+                });
+            });
+        });
+
+    });
+
+    $(function() {
+        var $container = $('#info-tags');
+        $container.imagesLoaded(function() {
+            $container.masonry({
+                itemSelector: '.item',
+                isAnimated: true
+            });
+        });
+    });
+
 });
 
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-});
-
-$(document).ready(function() {
-    $('body').fadeloader({ });
-});

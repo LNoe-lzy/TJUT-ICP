@@ -10,7 +10,7 @@
     </div>
     <div class="masonry-container" id="masonry-container">
         <% images.forEach(function(image){ %>
-        <div class="item b">
+        <div class="item">
             <div class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn">
                 <img src="<%= image.imagePath %>" data-imgId="<%= image._id %>">
             </div>
@@ -31,7 +31,7 @@
                 <%= image.info %>
             </div>
             <div class="item-from">
-                来自于
+                <span class="glyphicon glyphicon-tags"></span>
                 <% image.tag.forEach(function(tg){ %>
                 <% if (tg) { %>
                 <a href="/tags/<%= tg %>"><%= tg %></a>
@@ -43,8 +43,8 @@
         </div>
         <% }) %>
         <div class="clear"></div>
-        <%- include paging.ejs %>
     </div>
+    <%- include paging.ejs %>
 </div>
 <!--bootstrap弹窗-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -59,7 +59,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <a href="" class="btn btn-primary" id="md-vi">查看</a>
+                <a href="" class="btn btn-orange" id="md-vi">查看</a>
             </div>
         </div>
     </div>
