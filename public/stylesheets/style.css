@@ -19,7 +19,15 @@ a:hover{
 input{
   outline: none;
 }
-.header{
+#header {
+  width:100%;
+  padding-top: 10px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
+  background-color: #ffffff;
+  z-index: 800;
+}
+#header-scroll {
+  display: none;
   height: 54px;
   width:100%;
   position: fixed;
@@ -31,6 +39,14 @@ input{
   background-color: #ffffff;
   z-index: 800;
 }
+.header-lg {
+  padding: 20px 12px;
+}
+.btn-big {
+  padding: 11px 16px;
+  line-height: 1.3333333;
+  border-radius: 6px;
+}
 .btn-orange {
   background-color: rgba(255,105,31,.8);
   color: #ffffff;
@@ -40,8 +56,9 @@ input{
   background-color: #ff691f;
   color: #ffffff;
 }
-
-
+.pager li>a {
+  border-radius: 5px;
+}
 
 .logo{
   background-image: url("../images/logo.png");
@@ -50,14 +67,18 @@ input{
   width: 15px;
 }
 .main-container {
-  padding: 55px 20px;
+  padding: 0 20px;
   min-height: 612px;
   background-color: #ffffff;
 }
-.headerContainer-left{
+#headerContainer-left{
   width:80%;
   float: left;
 }
+.headerContainer-span {
+  background-color: #ffffff;
+}
+
 .headerContainer-right{
   width:20%;
   float: left;
@@ -377,8 +398,7 @@ input{
   position: fixed;
   top: 60px;
   z-index: 799;
-  background-image: url('../images/bg1.png');
-  background-color: #364050;
+  background-color: #ffffff;
   border-radius: 6px;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
   padding: 1%;
@@ -396,6 +416,11 @@ input{
   background-color: white;
   border-radius: 6px;
   border: 1px solid #adadad;
+  cursor: pointer;
+  transition: all 300ms ease-in;
+}
+.upload-wrap:hover {
+  border-color: rgba(255,105,31,.8);
 }
 .upload-pic{
   position: absolute;

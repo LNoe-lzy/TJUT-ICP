@@ -96,6 +96,16 @@ $(document).ready(function(){
         });
     });
 
+    $(function(){
+        $(window).scroll(function(){
+            if ($(window).scrollTop() > 55){
+                $('#header-scroll').fadeIn(1000);
+            } else {
+                $('#header-scroll').fadeOut(500);
+            }
+        });
+    });
+
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
