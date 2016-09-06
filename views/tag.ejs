@@ -1,10 +1,10 @@
 <%- include header.ejs %>
 <div class="main-container">
     <div class="masonry-container">
-        <% tags.forEach(function(tag, index){ %>
-        <div class="item b">
+        <% tags.forEach(function(tag) { %>
+        <div class="item" data-src="<%= tag.imagePath %>" data-id="<%= tag._id %>">
             <div class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn">
-                <img src="<%= tag.imagePath %>" data-imgname="<%= tag.imageName %>">
+
             </div>
 
             <% if (user) { %>
@@ -14,11 +14,7 @@
             <% } %>
 
             <% if (user) {%>
-            <% if ((!tag.info)&&(tag.name == user.name)) { %>
-            <div class="item-from">
-                请您点击<a href="/u/edit/<%= user.name %>/<%= image.imageName %>"><i>编辑</i></a> 进行编辑!
-            </div>
-            <% } else { %>
+
             <div class="item-wrap">
                 <%= tag.info %>
             </div>
@@ -30,7 +26,7 @@
                 <% } %>
                 <% }) %>
             </div>
-            <% } %>
+
             <% } %>
         </div>
         <% }) %>
@@ -53,7 +49,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <a href="" class="btn btn-primary" id="md-vi">查看相似</a>
+                <a href="" class="btn btn-orange" id="md-vi">查看相似</a>
             </div>
         </div>
     </div>

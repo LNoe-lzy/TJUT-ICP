@@ -30,7 +30,7 @@ router.get('/', function(req, res){
       if (err) {
         console.log(err);
       }
-      Images.find(null).skip((page - 1) * 30).limit(30).exec(function (err, images) {
+      Images.find(null).sort({_id: -1}).skip((page - 1) * 30).limit(30).exec(function (err, images) {
         if (err) {
           console.log(err);
         }
@@ -142,14 +142,19 @@ router.get('/logout', function(req, res){
 //用户上传图像
 router.post('/new', checkLogin);
 router.post('/new', upload.single('fulAvatar'),function(req, res) {
-  var username = req.session.user.name;
-  //获取临时存储位置
-  var tmp_path = req.file.path;
-  //获取文件名称
-  var file_name = req.file.filename;
-  //获取文件的mime类型以修改扩展名
-  var mimeType = req.file.mimetype;
-  imgUpload.imgUpload(tmp_path, file_name, mimeType, username, req, res);
+   //获取临时存储位置
+  var tmp_path = req.file.path,
+      //获取文件名称
+      file_name = req.file.filename,
+      //获取文件的mime类型以修改扩展名
+      mimeType = req.file.mimetype,
+      data = {
+        userId: req.session.user._id,
+        userName: req.session.user.name,
+        info: req.body.text,
+        tag: req.body.tag.split(' ')
+      };
+  imgUpload.imgUpload(tmp_path, file_name, mimeType, data, req, res);
 });
 
 router.get('/u/:id', checkLogin);
@@ -239,7 +244,7 @@ router.get('/u/:id/history', function(req, res) {
           res.render('history', {
             title: user.name,
             user: currentUser,
-            history: hisArray.sort(Tool.keysort('_id', true)),
+            history: hisArray,
             currentUser: user,
             success: req.flash('success').toString(),
             error: req.flash('error').toString()
@@ -305,7 +310,7 @@ router.get('/info/:imageId', function(req, res){
     }
     var newHistory = new History({
       userId: req.session.user._id,
-      imageId: image._id
+      imageId: req.params.imageId
     });
     newHistory.save(function(err){
       if (err) {
@@ -346,8 +351,8 @@ router.get('/info/:imageId', function(req, res){
   });
 });
 
-router.get('/remove/:name/:imageId',checkLogin);
-router.get('/remove/:name/:imageId', function(req, res){
+router.get('/remove/:imageId',checkLogin);
+router.get('/remove/:imageId', function(req, res){
   var currentUser = req.session.user._id;
   Images.remove({
     userId: currentUser,
@@ -393,21 +398,34 @@ router.get('/tags/:tag', function(req, res){
 
 router.get('/search', checkLogin);
 router.get('/search', function(req, res){
-  var keyword = req.query.keyword,
-      pattern = new RegExp("^.*" + keyword + ".*$", "i");
+  var pattern = new RegExp("^.*" + req.query.keyword + ".*$", "i"),
+      img = [];
   Images.find({
     info: pattern
-  }, function(err, searchs){
+  }, function(err, ir){
     if (err){
       req.flash('error', err);
       return res.redirect('/');
     }
-    res.render('search', {
-      title: "搜索结果",
-      searchs: searchs,
-      user: req.session.user,
-      success: req.flash('success').toString(),
-      error: req.flash('error').toString()
+    ir.forEach(function (e1) {
+      img.push(e1);
+    });
+    Images.find({
+      tag: pattern
+    }, function (err, tr) {
+      if (err) {
+        console.log(err);
+      }
+      tr.forEach(function (e2) {
+        img.push(e2);
+      });
+      res.render('search', {
+        title: "搜索结果",
+        searchs: img,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      });
     });
   });
 });

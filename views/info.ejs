@@ -6,30 +6,25 @@
             <div class="item-user">
                 <a><%= image.name %></a>
             </div>
-            <% if (!image.info) { %>
-            <div class="item-from">
-                请您点击<a href="/u/edit/<%= user.name %>/<%= image.imageName %>"><i>编辑</i></a> 进行编辑!
-            </div>
-            <% } else { %>
+
             <div class="item-wrap">
                 <%= image.info %>
             </div>
             <div class="item-from">
                 <span class="glyphicon glyphicon-tags"></span>
-                <% image.tag.forEach(function(tg, index){ %>
+                <% image.tag.forEach(function(tg){ %>
                 <% if (tg) { %>
                 <a href="/tags/<%= tg %>"><%= tg %></a>
                 <% } %>
                 <% }) %>
             </div>
-            <% } %>
         </div>
         <div class="info-tagcon">
             <div id="info-tags">
-                <% images.forEach(function(imgs, index){ %>
-                <div class="item">
+                <% images.forEach(function(imgs){ %>
+                <div class="item" data-src="<%= imgs.imagePath%>" data-id="<%= imgs._id %>">
                     <div class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn">
-                        <img src="<%= imgs.imagePath %>" data-imgname="<%= imgs.imageName %>">
+
                     </div>
 
                     <% if (user) { %>

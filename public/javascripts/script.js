@@ -4,9 +4,9 @@
 $(document).ready(function(){
     $('.mBtn').each(function(){
         var that = $(this);
-        var target = that.children();
-        var imgSrc = target.attr("src");
-        var imgId = target.attr('data-imgId');
+        var target = that.parent();
+        var imgSrc = target.attr("data-src");
+        var imgId = target.attr('data-id');
         $(this).click(function(){
             $('#md-by').attr({
                 src: imgSrc
@@ -49,7 +49,7 @@ $(document).ready(function(){
         });
     });
 
-    $('#imgSearch').click(function(){
+    $('.imgSearch').click(function(){
         $('#upload').fadeIn();
     });
     $('#upload-remove').click(function(){
@@ -98,7 +98,7 @@ $(document).ready(function(){
 
     $(function(){
         $(window).scroll(function(){
-            if ($(window).scrollTop() > 55){
+            if ($(window).scrollTop() > 70){
                 $('#header-scroll').fadeIn(1000);
             } else {
                 $('#header-scroll').fadeOut(500);
@@ -132,6 +132,40 @@ $(document).ready(function(){
                 isAnimated: true
             });
         });
+    });
+
+    // 图片预加载
+    $(function () {
+        $('.item').each(function () {
+            var that = $(this),
+                node = that.find('#modal-btn'),
+                imgSrc = that.attr('data-src');
+            var myImage = (function () {
+                var imgNode = $('<img>');
+                imgNode.appendTo(node);
+                return {
+                    setSrc: function (src) {
+                        imgNode.attr({
+                            src: src
+                        });
+                    }
+                }
+            })();
+            var proxyImage = (function () {
+                var img = new Image;
+                img.onload = function () {
+                    myImage.setSrc(this.src);
+                };
+                return {
+                    setSrc: function (src) {
+                        myImage.setSrc('../images/loading.gif');
+                        img.src = src;
+                    }
+                }
+            })();
+
+            proxyImage.setSrc(imgSrc);
+        })
     });
 
 });

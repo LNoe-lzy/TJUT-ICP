@@ -1,7 +1,6 @@
 body {
   padding: 0;
   margin: 0;
-  background: #e9e9e9;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 14px;
   -webkit-transition: all 200ms ease-in;
@@ -163,8 +162,8 @@ input{
 }
 .item-user{
   display: block;
-  padding: .5em;
-  color: rgb(119, 119, 119);
+  padding: .5em .5em 0 .5em;
+  color: rgba(255,105,31,.8);
   font-size: 16px;
   font-weight: 500;
   position: relative;
@@ -174,8 +173,7 @@ input{
   transition: all 200ms ease-in;
 }
 .item-user:hover{
-  background: rgb(231, 231, 231);
-  color: rgb(119, 119, 119);
+  color: #ff691f;
 }
 .item-from{
   color: #b0b0b0;
@@ -227,7 +225,6 @@ input{
 
 /*user页面*/
 .fixed-header{
-  margin-top: 55px;
   padding: 10px;
   width: 100%;
   background-color: white;
@@ -390,7 +387,7 @@ input{
   margin: 0 auto;
 }
 
-#imgSearch{
+.imgSearch{
   cursor: pointer;
 }
 #upload{
@@ -456,4 +453,16 @@ input{
   box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
   padding: 1%;
   display: none;
+}
+.new-text, .new-tag {
+  width: 100%;
+  margin-bottom: .5em;
+}
+.new-text textarea,
+.new-tag input {
+  border: 1px solid rgba(255,105,31,.8);
+  color:  #ff691f;
+  padding: .5em .8em;
+  border-radius: 5px;
+  width: 100%;
 }

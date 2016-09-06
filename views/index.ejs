@@ -1,7 +1,7 @@
 <%- include header.ejs %>
 <div class="main-container">
     <div id="tag-container">
-        <% t.forEach(function(tag){%>
+        <% t.forEach(function(tag){ %>
         <a class="tag" href="/tags/<%= tag.tagName %>">
             <div class="tag-info"><%= tag.tagName %></div>
         </a>
@@ -10,9 +10,9 @@
     </div>
     <div class="masonry-container" id="masonry-container">
         <% images.forEach(function(image){ %>
-        <div class="item">
+        <div class="item" data-src="<%= image.imagePath %>" data-id="<%= image._id %>">
             <div class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn">
-                <img src="<%= image.imagePath %>" data-imgId="<%= image._id %>">
+
             </div>
 
             <% if (user) { %>
@@ -22,11 +22,7 @@
             <% } %>
 
             <% if (user) {%>
-            <% if ((!image.info)&&(image.name == user.name)) { %>
-            <div class="item-from">
-                请您点击<a href="/u/edit/<%= user.name %>/<%= image.imageName %>"><i>编辑</i></a> 进行编辑!
-            </div>
-            <% } else { %>
+
             <div class="item-wrap">
                 <%= image.info %>
             </div>
@@ -38,7 +34,7 @@
                 <% } %>
                 <% }) %>
             </div>
-            <% } %>
+
             <% } %>
         </div>
         <% }) %>
@@ -50,10 +46,6 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
             <div class="modal-body">
                 <img class="modal-body-img" id="md-by" src="" alt="">
             </div>

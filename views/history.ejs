@@ -31,20 +31,13 @@
 </div>
 <div class="main-container">
     <div class="masonry-container">
-        <% history.forEach(function(his, index){ %>
-        <div class="item a">
-            <% if (his.name == user.name) { %>
-            <a href="/remove/<%= user.name %>/<%= his.imageName %>" class="remove btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-            <% } %>
-            <a href="/info/<%= his.imageName %>" class="item-image"><img src="<%= his.imagePath %>" alt=""></a>
+        <% history.forEach(function(his) { %>
+        <div class="item">
+            <a href="/info/<%= his._id %>" class="item-image"><img src="<%= his.imagePath %>" alt=""></a>
             <div class="item-user">
                 <a><%= his.name %></a>
             </div>
-            <% if (!his.info) { %>
-            <div class="item-from">
-                请您点击<a href="/<%= user.name %>/edit/<%= his.imageName %>"><i>编辑</i></a> 进行编辑!
-            </div>
-            <% } else { %>
+
             <div class="item-wrap">
                 <%= his.info %>
             </div>
@@ -56,7 +49,7 @@
                 <% } %>
                 <% }) %>
             </div>
-            <% } %>
+
         </div>
         <% }) %>
 

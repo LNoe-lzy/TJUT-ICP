@@ -1,10 +1,10 @@
 <%- include header.ejs %>
 <div class="main-container">
     <div class="masonry-container">
-        <% searchs.forEach(function(search, index){ %>
-        <div class="item">
+        <% searchs.forEach(function(search){ %>
+        <div class="item" data-src="<%= search.imagePath%>">
             <div class="item-modal mBtn item-image" data-toggle="modal" data-target="#myModal" id="modal-btn">
-                <img src="<%= search.imagePath %>" alt="">
+
             </div>
 
             <% if (user) { %>
@@ -14,18 +14,15 @@
             <% } %>
 
             <% if (user) {%>
-            <% if ((!search.info)&&(search.name == user.name)) { %>
-            <div class="item-from">
-                请您点击<a href="/<%= user.name %>/edit/<%= search.imageName %>"><i>编辑</i></a> 进行编辑!
-            </div>
-            <% } else { %>
+
             <div class="item-wrap">
                 <%= search.info %>
             </div>
             <div class="item-from">
-                来自于 <a href="/tags/<%= search.tag %>"><%= search.tag %></a>
+                <span class="glyphicon glyphicon-tags"></span>
+                <a href="/tags/<%= search.tag %>"><%= search.tag %></a>
             </div>
-            <% } %>
+
             <% } %>
         </div>
         <% }) %>
@@ -38,10 +35,6 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
             <div class="modal-body">
                 <img class="modal-body-img" id="md-by" src="" alt="">
             </div>

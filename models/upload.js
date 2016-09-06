@@ -4,7 +4,7 @@
 var fs = require('fs');
 var Images = require('./image');
 
-exports.imgUpload = function(tmp, file_name, mime, username, req, res){
+exports.imgUpload = function(tmp, file_name, mime, data, req, res){
     //指定目标存储位置
     var target_path = 'public/avatar/upload/' + file_name;
     var extName = '';
@@ -43,7 +43,13 @@ exports.imgUpload = function(tmp, file_name, mime, username, req, res){
             }
         });
     });
-    var newImages = new Images(imgpath, file_name, username);
+    var newImages = new Images({
+        imagePath: imgpath,
+        userId: data.userId,
+        name: data.userName,
+        info: data.info,
+        tag: data.tag
+    });
     newImages.save(function(err){
         if (err){
             req.flash('error', err);

@@ -31,7 +31,7 @@
                     <span class="input-group-addon headerContainer-span" id="basic-addon1"><a class="logo" href="/"></a> </span>
                     <input type="text" class="form-control header-lg" placeholder="Search" aria-describedby="basic-addon1" name="keyword">
                     <span class="input-group-addon headerContainer-span" id="basic-addon1">
-                        <span id="imgSearch" class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                        <span  class="glyphicon glyphicon-picture imgSearch" aria-hidden="true"></span>
                     </span>
                 </div>
             </form>
@@ -74,8 +74,8 @@
             </div>
             <% } else  { %>
             <div class="userinfo">
-                <a href="/login" class="btn btn-orange">登录</a>
-                <a href="/signup" class="btn btn-default">注册</a>
+                <a href="/login" class="btn btn-big btn-orange">登录</a>
+                <a href="/signup" class="btn btn-big btn-default">注册</a>
             </div>
             <% } %>
         </div>
@@ -90,7 +90,7 @@
                     <span class="input-group-addon headerContainer-span" id="basic-addon1"><a class="logo" href="/"></a> </span>
                     <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1" name="keyword">
                     <span class="input-group-addon headerContainer-span" id="basic-addon1">
-                        <span id="imgSearch" class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-picture imgSearch" aria-hidden="true"></span>
                     </span>
                 </div>
             </form>
@@ -133,8 +133,8 @@
             </div>
             <% } else  { %>
             <div class="userinfo">
-                <a href="/login" class="btn btn-big btn-orange">登录</a>
-                <a href="/signup" class="btn btn-big btn-default">注册</a>
+                <a href="/login" class="btn btn-orange">登录</a>
+                <a href="/signup" class="btn btn-default">注册</a>
             </div>
             <% } %>
         </div>
@@ -155,6 +155,12 @@
 <div id="new">
     <div class="upload-info">
         <form method="post" action="/new" enctype='multipart/form-data'>
+            <div class="new-text">
+                <textarea name="text" placeholder="添加描述..."></textarea>
+            </div>
+            <div class="new-tag">
+                <input placeholder="请输入标签,以空格分隔..." name="tag">
+            </div>
             <div class="upload-wrap">
                 <input type="file" class="upload-pic" name="fulAvatar" id="newInput">
                 <span class="upload-text" id="newSpan">本地上传图片</span>

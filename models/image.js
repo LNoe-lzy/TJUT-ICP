@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 var ImageSchema = new Schema({
     imagePath: 'String',
     userId: 'String',
+    name: 'String',
     info: 'String',
     tag: []
 });
