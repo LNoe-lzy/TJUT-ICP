@@ -1,13 +1,5 @@
 <%- include header.ejs %>
 <div class="main-container">
-    <div id="tag-container">
-        <% t.forEach(function(tag){ %>
-        <a class="tag" href="/tags/<%= tag.tagName %>">
-            <div class="tag-info"><%= tag.tagName %></div>
-        </a>
-        <% }) %>
-        <div class="clear"></div>
-    </div>
     <div class="masonry-container" id="masonry-container">
         <% images.forEach(function(image){ %>
         <div class="item" data-src="<%= image.imagePath %>" data-id="<%= image._id %>">

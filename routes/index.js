@@ -9,42 +9,33 @@ var async = require('async');
 
 var imgUpload = require('../models/upload');
 
-User = require('../models/user');
-Images = require('../models/image');
-Proxy = require('../models/proxy');
-History = require('../models/history');
-Tags = require('../models/tag');
-Tool = require('../models/tool');
+var User = require('../models/user'),
+    Images = require('../models/image'),
+    Proxy = require('../models/proxy'),
+    History = require('../models/history');
 
 //GET home page.
 //通过分页效果渲染首页
 router.get('/', function(req, res){
   var page = req.query.page ? parseInt(req.query.page) : 1;
-  var user = req.session.user;
-  Tags.find(null, function (err, tags) {
+  // 分页查询
+  Images.find(null).count().exec(function (err, total) {
     if (err) {
       console.log(err);
     }
-    // 分页查询
-    Images.find(null).count().exec(function (err, total) {
+    Images.find(null).sort({_id: -1}).skip((page - 1) * 30).limit(30).exec(function (err, images) {
       if (err) {
         console.log(err);
       }
-      Images.find(null).sort({_id: -1}).skip((page - 1) * 30).limit(30).exec(function (err, images) {
-        if (err) {
-          console.log(err);
-        }
-        res.render('index', {
-          title: 'LeeImage',
-          user: req.session.user,
-          t: tags,
-          images: images,
-          page: page,
-          isFirstPage: (page - 1) === 0,
-          isLastPage: ((page - 1) * 30 + images.length) === total,
-          success: req.flash('success').toString(),
-          error: req.flash('error').toString()
-        });
+      res.render('index', {
+        title: 'LeeImage',
+        user: req.session.user,
+        images: images,
+        page: page,
+        isFirstPage: (page - 1) === 0,
+        isLastPage: ((page - 1) * 30 + images.length) === total,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
       });
     });
   });
@@ -476,6 +467,7 @@ router.get('/admin', function(req, res){
 
 router.post('/admin', function(req, res){
   var t_url = req.body.url;
+  console.log(t_url);
   var newProxy = new Proxy(t_url);
   newProxy.startproxy(function(err){
     if (err){

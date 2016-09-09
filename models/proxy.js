@@ -1,10 +1,10 @@
-var mongodb = require('./db');
 var request = require('request');
 var cheerio = require('cheerio');
 var fs = require('fs');
 var async = require('async');
 
 var Tags = require('./tag');
+var Images = require('./image');
 
 function Proxy(imgSourceUrl){
     this.sourceUrl = imgSourceUrl;
@@ -55,6 +55,8 @@ function downloadImg(url, img, name, callback){
                 request(url).pipe(fs.createWriteStream(imgStorePath)).on('close', function(){
                     console.log(name + ' 已获取完毕!');
                     saveImg(img, callback);
+                }).on('error', function (err) {
+                    callback(err);
                 });
             }
         });
@@ -62,27 +64,15 @@ function downloadImg(url, img, name, callback){
 }
 
 //存储图片到数据库
-function saveImg(img,callback){
-    mongodb.open(function(err, db){
-        if (err){
-            return callback(err);
+function saveImg(img, callback){
+    Images.update(img, null, {
+        upsert: true
+    }, function (err) {
+        if (err) {
+            console.log(err);
         }
-        db.collection('images',function(err, collections){
-            if (err) {
-                mongodb.close();
-                return callback(err);
-            }
-            collections.update(img, img ,{
-                upsert: true
-            }, function(err){
-                mongodb.close();
-                if (err){
-                    return callback;
-                }
-                console.log(img.imageName + '已存储完毕!');
-                callback(null);
-            });
-        });
+        console.log(img.imageName + '已存储完毕!');
+        callback(null);
     });
 }
 
@@ -116,14 +106,16 @@ function requestUrl(url, tag, callback){
             var imgLinkPath = '/avatar/proxy/' + item.name + '.jpg';
             var img = {
                 imagePath: imgLinkPath,
-                imageName: item.name,
                 name: 'admin',
                 time: time,
                 info: item.info,
                 tag: tag
             };
             //存储标签信息以及海报信息
-            var newTag = new Tags(tag[0], imgLinkPath);
+            var newTag = new Tags({
+                tagName:tag[0],
+                postPath: imgLinkPath
+            });
             newTag.save();
             console.log(item.name + '开始获取!');
             downloadImg(item.url, img, item.name, callback);
