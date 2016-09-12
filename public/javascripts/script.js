@@ -3,26 +3,28 @@
  */
 $(document).ready(function(){
     $('.mBtn').each(function(){
-        var that = $(this);
-        var target = that.parent();
-        var imgSrc = target.attr("data-src");
-        var imgId = target.attr('data-id');
-        $(this).click(function(){
+        var that = $(this),
+            target = that.parent(),
+            imgSrc = target.attr("data-src"),
+            imgId = target.attr('data-id'),
+            imgInfo = target.find('.item-wrap').html();
+        that.click(function(){
             $('#md-by').attr({
                 src: imgSrc
             });
             $('#md-vi').attr({
                 href: '/info/' + imgId
-            })
+            });
+            $('#md-info').html(imgInfo);
         });
     });
 
     $('#edit-edit').click(function(){
-        var name = $('#user-name').html();
-        var newName = $('#edit-name').val();
-        var newEmail = $('#edit-email').val();
-        var newText = $('#edit-text').val();
-        var par = {
+        var name = $('#user-name').html(),
+            newName = $('#edit-name').val(),
+            newEmail = $('#edit-email').val(),
+            newText = $('#edit-text').val(),
+            par = {
             name: name,
             newName: newName,
             email: newEmail,
@@ -37,8 +39,8 @@ $(document).ready(function(){
     });
 
     $('#proxy-btn').click(function(){
-        var t_url = $('#t_url').val();
-        var par = {
+        var t_url = $('#t_url').val(),
+            par = {
             url: t_url
         };
         $.ajax({
@@ -72,11 +74,6 @@ $(document).ready(function(){
 
     $('#newInput').change(function(){
         $('#newSpan').html('已选择图片');
-    });
-
-    //显示标签栏
-    $('#tag-bar').click(function(){
-        $('#tag-container').toggle(500);
     });
 
     //返回顶部
